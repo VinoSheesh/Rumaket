@@ -16,7 +16,7 @@ export default async function JoinPage({
         Gabung Room
       </h1>
       <p className="mt-1 text-sm text-slate-500">
-        Masukkan kode undangan yang diberikan oleh keluarga/admin pasien.
+        Masukkan kode undangan yang diberikan oleh keluarga/admin lansia.
       </p>
 
       {error && (

@@ -11,12 +11,12 @@ export function Hero() {
             Manajemen Perawatan Lansia
           </span>
           <h1 className="mt-4 font-display text-4xl font-extrabold leading-tight text-slate-900 md:text-5xl">
-            Satu room, satu pasien,{" "}
+            Satu room, satu lansia,{" "}
             <span className="text-brand-700">perawatan yang tertata.</span>
           </h1>
           <p className="mt-5 max-w-lg text-base text-slate-600 md:text-lg">
             Kelola caretaker, jadwal pengobatan, absensi shift, dan catatan
-            harian pasien dalam satu tempat — dirancang untuk keluarga dan
+            harian lansia dalam satu tempat — dirancang untuk keluarga dan
             perawat, bukan untuk admin rumah sakit.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">

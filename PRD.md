@@ -12,14 +12,14 @@ Berikut adalah pembaruan **Product Requirement Document (PRD)** yang disesuaikan
 
 ### 1.1 Purpose
 
-Aplikasi manajemen perawatan berbasis **Room Lansia** (_Patient Room_) yang memungkinkan pemilik/admin atau keluarga pasien mengelola ruang perawatan, mengundang/menambahkan _CareTaker_, menyusun jadwal tugas berdasarkan kategori & waktu, melakukan absensi langsung (_one-click check-in/out_), serta memantau catatan perkembangan pasien.
+Aplikasi manajemen perawatan berbasis **Room Lansia** (_Patient Room_) yang memungkinkan pemilik/admin atau keluarga lansia mengelola ruang perawatan, mengundang/menambahkan _CareTaker_, menyusun jadwal tugas berdasarkan kategori & waktu, melakukan absensi langsung (_one-click check-in/out_), serta memantau catatan perkembangan lansia.
 
 ### 1.2 Target Roles & Access Control
 
 - **Room Owner / Admin / Keluarga Lansia**:
 - Membuat dan mengelola _Room Pasien_.
 - Menambahkan (_invite/assign_) satu atau beberapa CareTaker ke dalam room tertentu.
-- Mengatur jadwal harian, memantau log absensi, dan membaca catatan harian pasien.
+- Mengatur jadwal harian, memantau log absensi, dan membaca catatan harian lansia.
 
 - **CareTaker / Perawat**:
 - Mengakses _Room Pasien_ tempat mereka ditugaskan.

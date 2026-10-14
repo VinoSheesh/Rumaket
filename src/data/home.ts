@@ -1,7 +1,7 @@
 export const FEATURES = [
   {
     title: "Room Lansia Terisolasi",
-    desc: "Satu dasbor khusus per pasien — jadwal, absensi, dan catatan tidak tercampur antar keluarga lain.",
+    desc: "Satu dasbor khusus per lansia — jadwal, absensi, dan catatan tidak tercampur antar keluarga lain.",
   },
   {
     title: "Absensi Satu Ketuk",
@@ -21,7 +21,7 @@ export const STEPS = [
   {
     n: "01",
     title: "Buat Room Lansia",
-    desc: "Keluarga/admin membuat room khusus untuk satu pasien.",
+    desc: "Keluarga/admin membuat room khusus untuk satu lansia.",
   },
   {
     n: "02",
@@ -44,16 +44,16 @@ export const ROLES = [
   {
     label: "Room Owner / Keluarga",
     items: [
-      "Membuat dan mengelola room pasien",
+      "Membuat dan mengelola room lansia",
       "Mengundang satu atau beberapa caretaker",
-      "Mengatur jadwal harian pasien",
+      "Mengatur jadwal harian lansia",
       "Memantau log absensi & catatan harian",
     ],
   },
   {
     label: "CareTaker / Perawat",
     items: [
-      "Mengakses room pasien tempat ditugaskan",
+      "Mengakses room lansia tempat ditugaskan",
       "Check-in / check-out satu ketuk",
       "Menandai tugas selesai atau dilewati",
       "Menulis catatan perawatan harian",

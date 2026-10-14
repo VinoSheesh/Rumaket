@@ -52,8 +52,8 @@ export default async function DashboardPage() {
         {rooms.length === 0 ? (
           <EmptyState
             icon="🏠"
-            title="Belum ada room pasien"
-            description="Buat room pasien baru, atau gabung ke room yang sudah ada menggunakan kode undangan."
+            title="Belum ada room lansia"
+            description="Buat room lansia baru, atau gabung ke room yang sudah ada menggunakan kode undangan."
             action={
               <Link href="/dashboard/rooms/new">
                 <Button>Buat Room Pertama</Button>

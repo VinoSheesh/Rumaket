@@ -12,13 +12,11 @@ export default async function RegisterPage({
 
   return (
     <div className="rounded-md border border-slate-200 bg-white p-6">
-      <h1 className="font-display text-xl font-bold text-slate-900">
-        Daftar
-      </h1>
+      <h1 className="font-display text-xl font-bold text-slate-900">Daftar</h1>
       <p className="mt-1 text-sm text-slate-500">
         {join_code
           ? "Daftar dahulu, lalu masukkan kode undangan untuk bergabung."
-          : "Buat akun untuk mengelola room pasien atau bergabung sebagai caretaker."}
+          : "Buat akun untuk mengelola room lansia atau bergabung sebagai caretaker."}
       </p>
 
       {error && (

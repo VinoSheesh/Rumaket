@@ -1,7 +1,7 @@
 {
   "name": "Rumaket — Manajemen Perawatan Lansia",
   "short_name": "Rumaket",
-  "description": "Kelola room pasien, jadwal perawatan, absensi caretaker, dan catatan harian.",
+  "description": "Kelola room lansia, jadwal perawatan, absensi caretaker, dan catatan harian.",
   "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",

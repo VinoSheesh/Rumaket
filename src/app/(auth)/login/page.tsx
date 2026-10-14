@@ -12,11 +12,9 @@ export default async function LoginPage({
 
   return (
     <div className="rounded-md border border-slate-200 bg-white p-6">
-      <h1 className="font-display text-xl font-bold text-slate-900">
-        Masuk
-      </h1>
+      <h1 className="font-display text-xl font-bold text-slate-900">Masuk</h1>
       <p className="mt-1 text-sm text-slate-500">
-        Masuk untuk mengakses room pasien Anda.
+        Masuk untuk mengakses room lansia Anda.
       </p>
 
       {error && (
