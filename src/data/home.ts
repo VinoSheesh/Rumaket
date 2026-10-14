@@ -1,6 +1,6 @@
 export const FEATURES = [
   {
-    title: "Room Pasien Terisolasi",
+    title: "Room Lansia Terisolasi",
     desc: "Satu dasbor khusus per pasien — jadwal, absensi, dan catatan tidak tercampur antar keluarga lain.",
   },
   {
@@ -20,7 +20,7 @@ export const FEATURES = [
 export const STEPS = [
   {
     n: "01",
-    title: "Buat Room Pasien",
+    title: "Buat Room Lansia",
     desc: "Keluarga/admin membuat room khusus untuk satu pasien.",
   },
   {

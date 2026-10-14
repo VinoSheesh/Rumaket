@@ -27,7 +27,7 @@ export default async function RoomLayout({
                 {room.name}
               </h1>
               <p className="text-sm text-slate-500">
-                Pasien: {room.patient_name}
+                Lansia: {room.patient_name}
               </p>
             </div>
             <Badge

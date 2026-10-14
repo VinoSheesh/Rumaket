@@ -1,4 +1,4 @@
--- Caretaker & Patient Room — initial schema
+-- Rumaket & Elderly Room — initial schema
 -- Run this once in Supabase Dashboard → SQL Editor → New query → Run.
 
 -- ========== ENUMS ==========

@@ -15,7 +15,7 @@ export function CTA() {
         </div>
         <Link href="/register">
           <Button variant="secondary" size="lg" className="border-transparent">
-            Buat Room Pasien
+            Buat Room Lansia
           </Button>
         </Link>
       </div>

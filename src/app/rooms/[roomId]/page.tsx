@@ -88,7 +88,7 @@ export default async function RoomOverviewPage({
               {recentNotes.map((n) => (
                 <li key={n.id} className="text-sm text-slate-600">
                   <span className="font-medium text-slate-800">
-                    {n.profiles?.full_name ?? "Caretaker"}:
+                    {n.profiles?.full_name ?? "Rumaket"}:
                   </span>{" "}
                   {n.content.slice(0, 60)}
                   {n.content.length > 60 ? "…" : ""}

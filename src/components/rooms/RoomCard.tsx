@@ -25,9 +25,7 @@ export function RoomCard({
           <p className="font-display text-base font-semibold text-slate-900">
             {name}
           </p>
-          <p className="mt-0.5 text-sm text-slate-500">
-            Pasien: {patientName}
-          </p>
+          <p className="mt-0.5 text-sm text-slate-500">Lansia: {patientName}</p>
         </div>
         <Badge
           className={

@@ -54,7 +54,7 @@ export default async function AttendancePage({
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  <th className="px-4 py-2.5">Caretaker</th>
+                  <th className="px-4 py-2.5">Rumaket</th>
                   <th className="px-4 py-2.5">Check-In</th>
                   <th className="px-4 py-2.5">Check-Out</th>
                   <th className="px-4 py-2.5">Durasi</th>
@@ -63,9 +63,12 @@ export default async function AttendancePage({
               </thead>
               <tbody>
                 {logs.map((log) => (
-                  <tr key={log.id} className="border-b border-slate-100 last:border-b-0">
+                  <tr
+                    key={log.id}
+                    className="border-b border-slate-100 last:border-b-0"
+                  >
                     <td className="px-4 py-3 font-medium text-slate-800">
-                      {log.profiles?.full_name ?? "Caretaker"}
+                      {log.profiles?.full_name ?? "Rumaket"}
                     </td>
                     <td className="px-4 py-3 text-slate-600">
                       {new Date(log.check_in_at).toLocaleString("id-ID", {

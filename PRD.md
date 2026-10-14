@@ -1,10 +1,10 @@
-Berikut adalah pembaruan **Product Requirement Document (PRD)** yang disesuaikan dengan perubahan arsitektur pemicu *reminder*, di mana **Firebase Scheduler / Cloud Scheduler** digunakan sebagai pemicu (*trigger*) jadwal/pemberitahuan secara terpusat.
+Berikut adalah pembaruan **Product Requirement Document (PRD)** yang disesuaikan dengan perubahan arsitektur pemicu _reminder_, di mana **Firebase Scheduler / Cloud Scheduler** digunakan sebagai pemicu (_trigger_) jadwal/pemberitahuan secara terpusat.
 
 ---
 
 # Product Requirement Document (PRD)
 
-## Caretaker & Patient Management System
+## Rumaket & Elderly Management System
 
 ---
 
@@ -12,33 +12,30 @@ Berikut adalah pembaruan **Product Requirement Document (PRD)** yang disesuaikan
 
 ### 1.1 Purpose
 
-Aplikasi manajemen perawatan berbasis **Room Pasien** (*Patient Room*) yang memungkinkan pemilik/admin atau keluarga pasien mengelola ruang perawatan, mengundang/menambahkan *CareTaker*, menyusun jadwal tugas berdasarkan kategori & waktu, melakukan absensi langsung (*one-click check-in/out*), serta memantau catatan perkembangan pasien.
+Aplikasi manajemen perawatan berbasis **Room Lansia** (_Patient Room_) yang memungkinkan pemilik/admin atau keluarga pasien mengelola ruang perawatan, mengundang/menambahkan _CareTaker_, menyusun jadwal tugas berdasarkan kategori & waktu, melakukan absensi langsung (_one-click check-in/out_), serta memantau catatan perkembangan pasien.
 
 ### 1.2 Target Roles & Access Control
 
-* **Room Owner / Admin / Keluarga Pasien**:
-* Membuat dan mengelola *Room Pasien*.
-* Menambahkan (*invite/assign*) satu atau beberapa CareTaker ke dalam room tertentu.
-* Mengatur jadwal harian, memantau log absensi, dan membaca catatan harian pasien.
+- **Room Owner / Admin / Keluarga Lansia**:
+- Membuat dan mengelola _Room Pasien_.
+- Menambahkan (_invite/assign_) satu atau beberapa CareTaker ke dalam room tertentu.
+- Mengatur jadwal harian, memantau log absensi, dan membaca catatan harian pasien.
 
-
-* **CareTaker / Perawat**:
-* Mengakses *Room Pasien* tempat mereka ditugaskan.
-* Melakukan absensi *check-in/check-out* langsung tanpa verifikasi GPS/foto.
-* Menandai tugas yang telah selesai dan menulis catatan perawatan (*Notes*).
-
-
+- **CareTaker / Perawat**:
+- Mengakses _Room Pasien_ tempat mereka ditugaskan.
+- Melakukan absensi _check-in/check-out_ langsung tanpa verifikasi GPS/foto.
+- Menandai tugas yang telah selesai dan menulis catatan perawatan (_Notes_).
 
 ---
 
 ## 2. Updated Tech Stack Architecture
 
-| Layer | Technology | Purpose / Description |
-| --- | --- | --- |
-| **Backend & UI** | **Laravel Livewire** | Framework full-stack reaktif untuk performa dinamis tanpa SPA terpisah. |
-| **Styling** | **Tailwind CSS** | Custom styling utility untuk kontrol penuh antarmuka (*Anti-AI Slop design*). |
-| **Scheduler / Automation** | **Firebase / Google Cloud Scheduler** | Memicu tugas berkala/jadwal terencana (*scheduled jobs*) untuk memproses logika pengingat secara eksternal & *reliable*. |
-| **Push Notification & Database** | **Firebase FCM & Realtime Sync** | Mengirimkan *push notification* instan ke perangkat CareTaker/Keluarga & pembaruan status *real-time*. |
+| Layer                            | Technology                            | Purpose / Description                                                                                                    |
+| -------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Backend & UI**                 | **Laravel Livewire**                  | Framework full-stack reaktif untuk performa dinamis tanpa SPA terpisah.                                                  |
+| **Styling**                      | **Tailwind CSS**                      | Custom styling utility untuk kontrol penuh antarmuka (_Anti-AI Slop design_).                                            |
+| **Scheduler / Automation**       | **Firebase / Google Cloud Scheduler** | Memicu tugas berkala/jadwal terencana (_scheduled jobs_) untuk memproses logika pengingat secara eksternal & _reliable_. |
+| **Push Notification & Database** | **Firebase FCM & Realtime Sync**      | Mengirimkan _push notification_ instan ke perangkat CareTaker/Keluarga & pembaruan status _real-time_.                   |
 
 ---
 
@@ -70,61 +67,53 @@ Aplikasi manajemen perawatan berbasis **Room Pasien** (*Patient Room*) yang memu
 
 ## 4. Core Features & Functional Requirements
 
-### 4.1 Room Pasien & Management CareTaker
+### 4.1 Room Lansia & Management CareTaker
 
-* **Manajemen Room Pasien:**
-* Pembuatan ruang perawatan khusus (contoh: *Room Pasien - Ruang Melati / Opa Budi*).
-* Dasbor terisolasi per room yang berisi informasi perawat aktif, jadwal harian, log absensi, dan riwayat catatan harian.
+- **Manajemen Room Lansia:**
+- Pembuatan ruang perawatan khusus (contoh: _Room Lansia - Ruang Melati / Opa Budi_).
+- Dasbor terisolasi per room yang berisi informasi perawat aktif, jadwal harian, log absensi, dan riwayat catatan harian.
 
-
-* **Koneksi Multi-CareTaker:**
-* Seseorang/Admin dapat menambahkan satu atau **beberapa CareTaker** ke dalam satu room yang sama.
-* CareTaker hanya memiliki akses ke room-room tempat mereka terdaftar.
-
-
+- **Koneksi Multi-CareTaker:**
+- Seseorang/Admin dapat menambahkan satu atau **beberapa CareTaker** ke dalam satu room yang sama.
+- CareTaker hanya memiliki akses ke room-room tempat mereka terdaftar.
 
 ---
 
 ### 4.2 Sistem Absen Direct (Tanpa Verifikasi Lokasi/Foto)
 
-* **One-Tap Check-In / Check-Out:**
-* CareTaker cukup menekan tombol **"Mulai Shift / Check-In"** dan **"Selesai Shift / Check-Out"** di dasbor Room Pasien.
-* **Tanpa verifikasi GPS / Geofencing / Foto Selfie.**
+- **One-Tap Check-In / Check-Out:**
+- CareTaker cukup menekan tombol **"Mulai Shift / Check-In"** dan **"Selesai Shift / Check-Out"** di dasbor Room Lansia.
+- **Tanpa verifikasi GPS / Geofencing / Foto Selfie.**
 
-
-* **Status Log Kehadiran:**
-* Menampilkan indikator real-time perawat yang sedang *on-duty* di room tersebut beserta waktu mulai shift.
-
-
+- **Status Log Kehadiran:**
+- Menampilkan indikator real-time perawat yang sedang _on-duty_ di room tersebut beserta waktu mulai shift.
 
 ---
 
 ### 4.3 Schedule CareTaker (Kategori & Sub-Menu Waktu)
 
-* **Kategori Tugas:**
-* 💊 *Pengobatan (Medication)*
-* 🥗 *Nutrisi & Makanan (Meal/Diet)*
-* 🧼 *Higiene & Perawatan Diri (Hygiene)*
-* 🩺 *Pemeriksaan Tanda Vital (Vitals Check)*
-* 🏃 *Terapi & Aktivitas (Therapy/Exercise)*
+- **Kategori Tugas:**
+- 💊 _Pengobatan (Medication)_
+- 🥗 _Nutrisi & Makanan (Meal/Diet)_
+- 🧼 _Higiene & Perawatan Diri (Hygiene)_
+- 🩺 _Pemeriksaan Tanda Vital (Vitals Check)_
+- 🏃 _Terapi & Aktivitas (Therapy/Exercise)_
 
+- **Pengelompokan Waktu:**
+- Pagi (`06:00 - 11:59`)
+- Siang (`12:00 - 16:59`)
+- Sore / Malam (`17:00 - 21:59`)
+- Dini Hari / Jam Spesifik (`HH:mm`)
 
-* **Pengelompokan Waktu:**
-* Pagi (`06:00 - 11:59`)
-* Siang (`12:00 - 16:59`)
-* Sore / Malam (`17:00 - 21:59`)
-* Dini Hari / Jam Spesifik (`HH:mm`)
-
-
-* **Status Eksekusi:** *Pending*, *Completed*, atau *Skipped* (beserta catatan alasan).
+- **Status Eksekusi:** _Pending_, _Completed_, atau _Skipped_ (beserta catatan alasan).
 
 ---
 
 ### 4.4 Notes (Catatan Perawatan Harian)
 
-* Perekaman catatan ringkas harian oleh CareTaker setelah melakukan tindakan.
-* Pengelompokan catatan: *Kondisi Kesehatan, Perubahan Perilaku, Hasil Tensi/Gula Darah, Pesan Serah-Terima Shift*.
-* Dukungan unggah foto pendukung (seperti foto alat ukur tensi atau resep).
+- Perekaman catatan ringkas harian oleh CareTaker setelah melakukan tindakan.
+- Pengelompokan catatan: _Kondisi Kesehatan, Perubahan Perilaku, Hasil Tensi/Gula Darah, Pesan Serah-Terima Shift_.
+- Dukungan unggah foto pendukung (seperti foto alat ukur tensi atau resep).
 
 ---
 
@@ -136,21 +125,20 @@ Untuk memastikan antarmuka terasa **profesional, fungsional, dan bersih**, serta
 
 ❌ **Gradient berlebihan** (seperti gradien ungu/pink neon mengkilap).
 
-❌ **Soft shadow lebay** pada setiap *card* yang membuat antarmuka terasa melayang dan tidak rapi.
+❌ **Soft shadow lebay** pada setiap _card_ yang membuat antarmuka terasa melayang dan tidak rapi.
 
-❌ **Sudut melengkung ekstrem** (*rounded-full* pada kontainer utama) yang tampak seperti mainan.
+❌ **Sudut melengkung ekstrem** (_rounded-full_ pada kontainer utama) yang tampak seperti mainan.
 
-❌ **Ilustrasi kartun flat generik** (*corporate vector illustrations*) yang tidak menambah nilai fungsi.
+❌ **Ilustrasi kartun flat generik** (_corporate vector illustrations_) yang tidak menambah nilai fungsi.
 
 ### 5.2 Prinsip Desain UI
 
-* **High Density & Clean Layout:** Menggunakan tata letak berbentuk *timeline* vertikal ringkas atau tabel *checklist* fungsional untuk jadwal harian.
-* **Clear Visual Hierarchy:**
-* Font sans-serif yang bersih (*Inter* / *Plus Jakarta Sans*).
-* Kontras warna yang tegas (*Zinc/Slate neutral backgrounds* dengan aksen warna fungsional seperti Hijau Emerald untuk *Completed*, Kuning Amber untuk *Pending*, dan Merah Rose untuk *Overdue*).
+- **High Density & Clean Layout:** Menggunakan tata letak berbentuk _timeline_ vertikal ringkas atau tabel _checklist_ fungsional untuk jadwal harian.
+- **Clear Visual Hierarchy:**
+- Font sans-serif yang bersih (_Inter_ / _Plus Jakarta Sans_).
+- Kontras warna yang tegas (_Zinc/Slate neutral backgrounds_ dengan aksen warna fungsional seperti Hijau Emerald untuk _Completed_, Kuning Amber untuk _Pending_, dan Merah Rose untuk _Overdue_).
 
-
-* **Thumb-Friendly Actions:** Tombol *Check-In Absen* dan *Check-Off Task* dibuat tajam, berukuran proporsional, serta mudah ditekan dari layar smartphone tanpa ornamen hiasan yang mengganggu.
+- **Thumb-Friendly Actions:** Tombol _Check-In Absen_ dan _Check-Off Task_ dibuat tajam, berukuran proporsional, serta mudah ditekan dari layar smartphone tanpa ornamen hiasan yang mengganggu.
 
 ---
 
@@ -159,7 +147,7 @@ Untuk memastikan antarmuka terasa **profesional, fungsional, dan bersih**, serta
 ```
 [ Dasbor Utama ]
    │
-   ├── [ Room Pasien A ]
+   ├── [ Room Lansia A ]
    │     ├── Status Active CareTaker (Siapa yang sedang Check-In)
    │     ├── [ Quick Action ] ────> (Check-In / Check-Out Shift)
    │     ├── [ CareTaker List ] ──> (Tambah / Kelola CareTaker di Room)
@@ -180,21 +168,22 @@ Untuk memastikan antarmuka terasa **profesional, fungsional, dan bersih**, serta
 ## 7. MVP Development Roadmap
 
 1. **Sprint 1: Base Setup & Room Management**
-* Setup Laravel Livewire + Tailwind CSS.
-* Model DB: `users`, `patient_rooms`, `room_caretakers`, `schedules`, `attendances`, `notes`.
-* Fitur pembuatan *Room Pasien* dan penambahan CareTaker ke dalam room.
 
+- Setup Laravel Livewire + Tailwind CSS.
+- Model DB: `users`, `patient_rooms`, `room_caretakers`, `schedules`, `attendances`, `notes`.
+- Fitur pembuatan _Room Pasien_ dan penambahan CareTaker ke dalam room.
 
 2. **Sprint 2: Attendance System & Schedules**
-* Implementasi tombol *Check-In / Check-Out* sederhana (direct).
-* Pembuatan fitur *Schedule* dengan filter kategori dan slot waktu.
 
+- Implementasi tombol _Check-In / Check-Out_ sederhana (direct).
+- Pembuatan fitur _Schedule_ dengan filter kategori dan slot waktu.
 
 3. **Sprint 3: Notes & Firebase Scheduler Setup**
-* Fitur pencatatan medis harian (*Notes*).
-* Konfigurasi Firebase Scheduler (Cloud Scheduler) untuk memicu endpoint webhook Laravel.
 
+- Fitur pencatatan medis harian (_Notes_).
+- Konfigurasi Firebase Scheduler (Cloud Scheduler) untuk memicu endpoint webhook Laravel.
 
 4. **Sprint 4: Push Notification (FCM) & UI Polishing**
-* Integrasi Firebase FCM untuk pengiriman notifikasi pengingat ke HP CareTaker.
-* Penerapan panduan *Anti-AI Slop UI* pada komponen Livewire.
+
+- Integrasi Firebase FCM untuk pengiriman notifikasi pengingat ke HP CareTaker.
+- Penerapan panduan _Anti-AI Slop UI_ pada komponen Livewire.

@@ -10,7 +10,7 @@ export function Header() {
             C
           </span>
           <span className="font-display text-lg font-bold text-slate-900">
-            Caretaker
+            Rumaket
           </span>
         </div>
         <nav className="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">

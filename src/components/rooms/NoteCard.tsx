@@ -26,7 +26,7 @@ export function NoteCard({
         </span>
       </div>
       <p className="mt-2 text-sm font-medium text-slate-800">
-        {note.profiles?.full_name ?? "Caretaker"}
+        {note.profiles?.full_name ?? "Rumaket"}
       </p>
       <p className="mt-1 whitespace-pre-wrap text-sm text-slate-600">
         {note.content}
