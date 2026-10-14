@@ -16,11 +16,11 @@ export default async function NewRoomPage({
         ← Kembali
       </Link>
       <h1 className="mt-3 font-display text-2xl font-bold text-slate-900">
-        Buat Room Pasien
+        Buat Room Lansia
       </h1>
       <p className="mt-1 text-sm text-slate-500">
-        Setelah dibuat, Anda otomatis menjadi Owner dan mendapat kode
-        undangan untuk caretaker.
+        Setelah dibuat, Anda otomatis menjadi Owner dan mendapat kode undangan
+        untuk caretaker.
       </p>
 
       {error && (
@@ -44,7 +44,7 @@ export default async function NewRoomPage({
           />
         </div>
         <div>
-          <Label htmlFor="patient_name">Nama Pasien</Label>
+          <Label htmlFor="patient_name">Nama Lansia</Label>
           <Input
             id="patient_name"
             name="patient_name"

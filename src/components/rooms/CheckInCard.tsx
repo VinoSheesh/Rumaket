@@ -38,7 +38,7 @@ export function CheckInCard({
           table: "attendances",
           filter: `room_id=eq.${roomId}`,
         },
-        () => router.refresh()
+        () => router.refresh(),
       )
       .subscribe();
 
@@ -96,9 +96,7 @@ export function CheckInCard({
             className="flex items-center gap-2 text-sm text-slate-700"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            <span className="font-medium">
-              {o.full_name ?? "Caretaker"}
-            </span>
+            <span className="font-medium">{o.full_name ?? "Rumaket"}</span>
             <span className="text-slate-400">
               sejak{" "}
               {new Date(o.check_in_at).toLocaleTimeString("id-ID", {

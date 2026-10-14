@@ -15,14 +15,14 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Caretaker — Manajemen Perawatan Pasien",
+  title: "Rumaket — Manajemen Perawatan Lansia",
   description:
-    "Kelola room pasien, jadwal perawatan, absensi caretaker, dan catatan harian dalam satu tempat.",
+    "Kelola room lansia, jadwal perawatan, absensi caretaker, dan catatan harian dalam satu tempat.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Caretaker",
+    title: "Rumaket",
   },
 };
 

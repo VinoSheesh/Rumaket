@@ -32,7 +32,7 @@ export default async function DashboardPage() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl font-bold text-slate-900">
-            Room Pasien
+            Room Lansia
           </h1>
           <p className="mt-1 text-sm text-slate-500">
             Room yang Anda kelola atau tempat Anda bertugas.
@@ -52,8 +52,8 @@ export default async function DashboardPage() {
         {rooms.length === 0 ? (
           <EmptyState
             icon="🏠"
-            title="Belum ada room pasien"
-            description="Buat room pasien baru, atau gabung ke room yang sudah ada menggunakan kode undangan."
+            title="Belum ada room lansia"
+            description="Buat room lansia baru, atau gabung ke room yang sudah ada menggunakan kode undangan."
             action={
               <Link href="/dashboard/rooms/new">
                 <Button>Buat Room Pertama</Button>

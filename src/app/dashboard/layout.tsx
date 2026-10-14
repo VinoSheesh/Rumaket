@@ -31,7 +31,7 @@ export default async function DashboardLayout({
               C
             </span>
             <span className="font-display text-lg font-bold text-slate-900">
-              Caretaker
+              Rumaket
             </span>
           </Link>
           <div className="flex items-center gap-4">

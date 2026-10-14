@@ -11,8 +11,8 @@ export async function createRoom(formData: FormData) {
   if (!name || !patientName) {
     redirect(
       `/dashboard/rooms/new?error=${encodeURIComponent(
-        "Nama room dan nama pasien wajib diisi"
-      )}`
+        "Nama room dan nama lansia wajib diisi",
+      )}`,
     );
   }
 
@@ -49,8 +49,8 @@ export async function createRoom(formData: FormData) {
   if (!roomId) {
     redirect(
       `/dashboard/rooms/new?error=${encodeURIComponent(
-        lastError ?? "Gagal membuat room, coba lagi"
-      )}`
+        lastError ?? "Gagal membuat room, coba lagi",
+      )}`,
     );
   }
 

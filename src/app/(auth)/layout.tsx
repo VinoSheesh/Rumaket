@@ -13,7 +13,7 @@ export default function AuthLayout({
             C
           </span>
           <span className="font-display text-lg font-bold text-slate-900">
-            Caretaker
+            Rumaket
           </span>
         </Link>
       </header>
