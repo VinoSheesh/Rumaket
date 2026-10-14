@@ -63,7 +63,7 @@ export function CheckInCard({
   }
 
   return (
-    <div className="rounded-md border border-slate-200 bg-white p-5">
+    <div className="rounded-md border border-slate-200 bg-slate-50 p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="font-display text-sm font-semibold text-slate-900">
           Status Kehadiran

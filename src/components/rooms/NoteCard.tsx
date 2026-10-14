@@ -11,12 +11,12 @@ export function NoteCard({
   };
 }) {
   return (
-    <div className="rounded-md border border-slate-200 bg-white p-4">
+    <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
       <div className="flex items-center justify-between gap-3">
-        <Badge className="border-brand-200 bg-brand-50 text-brand-700">
+        <Badge variant="default">
           {NOTE_CATEGORIES[note.category].label}
         </Badge>
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-slate-600">
           {new Date(note.created_at).toLocaleString("id-ID", {
             day: "numeric",
             month: "short",
