@@ -8,7 +8,7 @@ export function NoteForm({ roomId }: { roomId: string }) {
     <form
       action={createNote.bind(null, roomId)}
       encType="multipart/form-data"
-      className="rounded-md border border-slate-200 bg-white p-4"
+      className="rounded-md border border-slate-200 bg-slate-50 p-4"
     >
       <div className="flex flex-col gap-3 sm:flex-row">
         <Select name="category" required defaultValue="health_condition" className="sm:w-56">
@@ -31,7 +31,7 @@ export function NoteForm({ roomId }: { roomId: string }) {
           type="file"
           name="photo"
           accept="image/*"
-          className="text-xs text-slate-500"
+          className="text-xs text-slate-600"
         />
         <Button type="submit" size="sm">
           Simpan Catatan

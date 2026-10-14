@@ -18,29 +18,30 @@ export function RoomCard({
   return (
     <Link
       href={`/rooms/${id}`}
-      className="block rounded-md border border-slate-200 bg-white p-5 transition-colors hover:border-brand-300"
+      className="block rounded-md border border-slate-200 bg-slate-50 p-5 transition-colors hover:border-brand-400 hover:bg-white"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="font-display text-base font-semibold text-slate-900">
             {name}
           </p>
-          <p className="mt-0.5 text-sm text-slate-500">Lansia: {patientName}</p>
+          <p className="mt-0.5 text-sm text-slate-700">Lansia: {patientName}</p>
         </div>
         <Badge
+          variant={role === "owner" ? "default" : undefined}
           className={
-            role === "owner"
-              ? "border-brand-200 bg-brand-50 text-brand-700"
-              : "border-slate-200 bg-slate-50 text-slate-600"
+            role !== "owner"
+              ? "border-slate-200 bg-slate-100 text-slate-700"
+              : ""
           }
         >
           {role === "owner" ? "Owner" : "CareTaker"}
         </Badge>
       </div>
       {role === "owner" && (
-        <p className="mt-4 text-xs text-slate-400">
+        <p className="mt-4 text-xs text-slate-600">
           Kode undangan:{" "}
-          <span className="font-mono font-semibold text-slate-600">
+          <span className="font-mono font-semibold text-slate-800">
             {inviteCode}
           </span>
         </p>

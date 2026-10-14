@@ -4,10 +4,6 @@ export const FEATURES = [
     desc: "Satu dasbor khusus per lansia — jadwal, absensi, dan catatan tidak tercampur antar keluarga lain.",
   },
   {
-    title: "Absensi Satu Ketuk",
-    desc: "Check-in / check-out langsung tanpa verifikasi GPS atau foto selfie yang merepotkan caretaker.",
-  },
-  {
     title: "Jadwal Berkategori",
     desc: "Obat, nutrisi, higiene, tanda vital, dan terapi — dikelompokkan per slot waktu, bukan daftar panjang membingungkan.",
   },

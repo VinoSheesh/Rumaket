@@ -12,13 +12,13 @@ export default async function NewRoomPage({
 
   return (
     <div className="max-w-md">
-      <Link href="/dashboard" className="text-sm text-slate-500">
+      <Link href="/dashboard" className="text-sm text-slate-600 hover:text-brand-700">
         ← Kembali
       </Link>
       <h1 className="mt-3 font-display text-2xl font-bold text-slate-900">
         Buat Room Lansia
       </h1>
-      <p className="mt-1 text-sm text-slate-500">
+      <p className="mt-1 text-sm text-slate-600">
         Setelah dibuat, Anda otomatis menjadi Owner dan mendapat kode undangan
         untuk caretaker.
       </p>
@@ -31,7 +31,7 @@ export default async function NewRoomPage({
 
       <form
         action={createRoom}
-        className="mt-6 space-y-4 rounded-md border border-slate-200 bg-white p-6"
+        className="mt-6 space-y-4 rounded-md border border-slate-200 bg-slate-50 p-6"
       >
         <div>
           <Label htmlFor="name">Nama Room</Label>

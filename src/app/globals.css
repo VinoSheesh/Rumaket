@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #eef0ff;
-  --color-brand-100: #dce0fe;
-  --color-brand-200: #bac0fd;
-  --color-brand-300: #8f94fa;
-  --color-brand-400: #645bf0;
-  --color-brand-500: #4530de;
-  --color-brand-600: #2c14b8;
-  --color-brand-700: #120080;
-  --color-brand-800: #0d0066;
-  --color-brand-900: #09004d;
-  --color-brand-950: #050030;
+  /* Primary Brand System (Deep Navy Trust) */
+  --color-brand-50: #f0f5ff;
+  --color-brand-100: #e5edff;
+  --color-brand-200: #cddbfe;
+  --color-brand-300: #b4c9fd;
+  --color-brand-400: #83a1f9;
+  --color-brand-500: #4e74f3;
+  --color-brand-600: #2b4ee6;
+  --color-brand-700: #1b3ac9;
+  --color-brand-800: #0c1e5b;
+  --color-brand-900: #0a2540;
+  --color-brand-950: #051124;
 
-  --font-display: var(--font-plus-jakarta), ui-sans-serif, system-ui,
-    sans-serif;
+  /* Highlight & Accent (Soft Ice Blue / Sky) */
+  --color-accent-50: #f0f9ff;
+  --color-accent-100: #e0f2fe;
+  --color-accent-200: #bae6fd;
+  --color-accent-300: #7dd3fc;
+  --color-accent-400: #38bdf8;
+  --color-accent-500: #0ea5e9;
+  --color-accent-600: #0284c7;
+
+  /* Warm Humanist Accent (Warm Sunlight / Caregiver Warmth) */
+  --color-warmth-50: #fffbeb;
+  --color-warmth-100: #fef3c7;
+  --color-warmth-200: #fde68a;
+  --color-warmth-500: #f59e0b;
+  --color-warmth-600: #d97706;
+
+  /* Typography */
+  --font-display: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Spacing System (8dp rhythm) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* Border Radius System */
+  --radius-sm: 0.125rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0b0b14;
+  --background: #f8fafc;
+  --foreground: #0f172a;
   color-scheme: light;
 }
 
@@ -28,6 +63,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {

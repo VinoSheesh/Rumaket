@@ -11,11 +11,11 @@ export default async function JoinPage({
   const { error } = await searchParams;
 
   return (
-    <div className="rounded-md border border-slate-200 bg-white p-6">
+    <div className="rounded-md border border-slate-200 bg-slate-50 p-6">
       <h1 className="font-display text-xl font-bold text-slate-900">
         Gabung Room
       </h1>
-      <p className="mt-1 text-sm text-slate-500">
+      <p className="mt-1 text-sm text-slate-600">
         Masukkan kode undangan yang diberikan oleh keluarga/admin lansia.
       </p>
 
@@ -43,9 +43,9 @@ export default async function JoinPage({
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <p className="mt-6 text-center text-sm text-slate-600">
         Belum punya akun?{" "}
-        <Link href="/register" className="font-medium text-brand-700">
+        <Link href="/register" className="font-medium text-brand-700 hover:text-brand-800">
           Daftar dahulu
         </Link>
       </p>

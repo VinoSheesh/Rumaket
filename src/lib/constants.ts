@@ -32,15 +32,15 @@ export const SCHEDULE_STATUS: Record<
 > = {
   pending: {
     label: "Pending",
-    className: "bg-amber-50 text-amber-700 border-amber-200",
+    className: "bg-warmth-100 text-warmth-600 border-warmth-200",
   },
   completed: {
     label: "Selesai",
-    className: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    className: "bg-emerald-100 text-emerald-700 border-emerald-200",
   },
   skipped: {
     label: "Dilewati",
-    className: "bg-rose-50 text-rose-700 border-rose-200",
+    className: "bg-rose-100 text-rose-700 border-rose-200",
   },
 };
 
