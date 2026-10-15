@@ -1,3 +1,4 @@
+
 "use server";
 
 import { redirect } from "next/navigation";
@@ -26,13 +27,13 @@ export async function createRoom(formData: FormData) {
     redirect("/login");
   }
 
-  let lastError: string | null = null;
+  let roomId: string | null = null;
+  let lastError = "Gagal membuat room, coba lagi.";
 
   for (let attempt = 0; attempt < 10; attempt++) {
     const code = generateInviteCode();
 
-    // Diagnostic: INSERT without returning the row.
-    const { error } = await supabase
+    const { error: insertError } = await supabase
       .from("patient_rooms")
       .insert({
         name,
@@ -41,37 +42,43 @@ export async function createRoom(formData: FormData) {
         created_by: userData.user.id,
       });
 
-    if (!error) {
-      console.log("Plain patient_rooms INSERT succeeded");
+    if (insertError) {
+      if (
+        insertError.code === "23505" &&
+        insertError.message.includes(
+          "patient_rooms_invite_code_key",
+        )
+      ) {
+        continue;
+      }
+
+      lastError = insertError.message;
       break;
     }
 
-    console.error("Plain patient_rooms INSERT failed:", {
-      code: error.code,
-      message: error.message,
-      details: error.details,
-      hint: error.hint,
-    });
+    const { data: room, error: selectError } = await supabase
+      .from("patient_rooms")
+      .select("id")
+      .eq("invite_code", code)
+      .single();
 
-    if (error.code === "23505") {
-      continue;
+    if (selectError || !room) {
+      console.error("Failed to retrieve created room:", selectError);
+
+      lastError =
+        "Room berhasil dibuat, tetapi gagal mengambil ID room.";
+      break;
     }
 
-    lastError = error.message;
+    roomId = room.id;
     break;
   }
 
-  if (lastError) {
+  if (!roomId) {
     redirect(
       `/dashboard/rooms/new?error=${encodeURIComponent(lastError)}`,
     );
   }
 
-  // Temporary diagnostic endpoint: don't redirect to a room yet,
-  // because this test intentionally doesn't retrieve its ID.
-  redirect(
-    `/dashboard/rooms/new?error=${encodeURIComponent(
-      "Tes INSERT selesai. Periksa terminal server untuk hasilnya.",
-    )}`,
-  );
+  redirect(`/rooms/${roomId}`);
 }
