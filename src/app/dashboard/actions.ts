@@ -11,14 +11,16 @@ export async function createRoom(formData: FormData) {
     formData.get("patient_name") ?? "",
   ).trim();
 
+  // Validate input
   if (!name || !patientName) {
     redirect(
       `/dashboard/rooms/new?error=${encodeURIComponent(
-        "Nama room dan nama lansia wajib diisi",
+        "Nama room dan nama lansia wajib diisi.",
       )}`,
     );
   }
 
+  // Verify authenticated user
   const supabase = await createClient();
   const { data: userData, error: authError } =
     await supabase.auth.getUser();
@@ -28,21 +30,25 @@ export async function createRoom(formData: FormData) {
   }
 
   let roomId: string | null = null;
-  let lastError = "Gagal membuat room, coba lagi.";
+  let lastError = "Gagal membuat room. Silakan coba lagi.";
 
+  // Retry if the generated invite code already exists
   for (let attempt = 0; attempt < 10; attempt++) {
-    const code = generateInviteCode();
+    const code = generateInviteCode(8);
 
-    const { error: insertError } = await supabase
+    const { data: room, error: insertError } = await supabase
       .from("patient_rooms")
       .insert({
         name,
         patient_name: patientName,
         invite_code: code,
         created_by: userData.user.id,
-      });
+      })
+      .select("id")
+      .single();
 
     if (insertError) {
+      // PostgreSQL unique constraint violation
       if (
         insertError.code === "23505" &&
         insertError.message.includes(
@@ -52,21 +58,15 @@ export async function createRoom(formData: FormData) {
         continue;
       }
 
-      lastError = insertError.message;
-      break;
-    }
-
-    const { data: room, error: selectError } = await supabase
-      .from("patient_rooms")
-      .select("id")
-      .eq("invite_code", code)
-      .single();
-
-    if (selectError || !room) {
-      console.error("Failed to retrieve created room:", selectError);
+      console.error("Failed to create room:", {
+        code: insertError.code,
+        message: insertError.message,
+        details: insertError.details,
+        hint: insertError.hint,
+      });
 
       lastError =
-        "Room berhasil dibuat, tetapi gagal mengambil ID room.";
+        "Gagal membuat room. Periksa koneksi atau izin database.";
       break;
     }
 
