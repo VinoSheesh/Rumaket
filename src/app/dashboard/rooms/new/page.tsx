@@ -1,14 +1,33 @@
+"use client";
+
+import { useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/firebase/auth-context";
 import { createRoom } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/Button";
 import { Input, Label } from "@/components/ui/Field";
 
-export default async function NewRoomPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>;
-}) {
-  const { error } = await searchParams;
+export default function NewRoomPage() {
+  const { user } = useAuth();
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!user) return;
+    const formData = new FormData(e.currentTarget);
+    setError(null);
+    startTransition(async () => {
+      const result = await createRoom(user.uid, formData);
+      if (!result.ok) {
+        setError(result.error);
+        return;
+      }
+      router.push(`/room?id=${result.roomId}`);
+    });
+  }
 
   return (
     <div className="max-w-md">
@@ -30,7 +49,7 @@ export default async function NewRoomPage({
       )}
 
       <form
-        action={createRoom}
+        onSubmit={handleSubmit}
         className="mt-6 space-y-4 rounded-md border border-slate-200 bg-slate-50 p-6"
       >
         <div>
@@ -53,7 +72,7 @@ export default async function NewRoomPage({
             required
           />
         </div>
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={isPending}>
           Buat Room
         </Button>
       </form>

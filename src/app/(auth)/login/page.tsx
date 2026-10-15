@@ -3,14 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { LoginForm } from "@/components/auth/LoginForm"; // Sesuaikan path impor ini
 import Image from "next/image";
 
-export default async function LoginPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>;
-}) {
-  const resolvedParams = await searchParams;
-  const error = resolvedParams?.error;
-
+export default function LoginPage() {
   return (
     <div className="h-screen w-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 flex overflow-hidden">
       <div className="hidden lg:flex flex-1 relative overflow-hidden">
@@ -68,12 +61,6 @@ export default async function LoginPage({
               Masuk untuk mengakses room lansia Anda.
             </p>
           </div>
-
-          {error && (
-            <div className="mb-6 rounded-xl border border-rose-200 bg-gradient-to-br from-rose-50 to-rose-100/50 px-4 py-3 shadow-sm">
-              <p className="text-sm font-medium text-rose-700">{error}</p>
-            </div>
-          )}
 
           <LoginForm />
 

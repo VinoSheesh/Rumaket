@@ -1,10 +1,17 @@
 "use client";
 
-import { useEffect, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { useEffect, useState, useTransition } from "react";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase/client";
 import { Button } from "@/components/ui/Button";
-import { checkIn, checkOut } from "@/app/rooms/[roomId]/actions";
+import { checkIn, checkOut } from "@/app/room/actions";
 
 export interface OnDutyEntry {
   id: string;
@@ -16,41 +23,55 @@ export interface OnDutyEntry {
 export function CheckInCard({
   roomId,
   userId,
-  onDuty,
 }: {
   roomId: string;
   userId: string;
-  onDuty: OnDutyEntry[];
 }) {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const mine = onDuty.find((o) => o.caretaker_id === userId);
+  const [onDuty, setOnDuty] = useState<OnDutyEntry[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const supabase = createClient();
-    const channel = supabase
-      .channel(`attendances-${roomId}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "attendances",
-          filter: `room_id=eq.${roomId}`,
-        },
-        () => router.refresh(),
-      )
-      .subscribe();
+    const q = query(
+      collection(db, "patient_rooms", roomId, "attendances"),
+      where("status", "==", "on_duty")
+    );
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [roomId, router]);
+    const profileCache = new Map<string, string | null>();
+
+    return onSnapshot(q, async (snap) => {
+      const entries = await Promise.all(
+        snap.docs.map(async (d) => {
+          const data = d.data();
+          const caretakerId = data.caretaker_id as string;
+
+          if (!profileCache.has(caretakerId)) {
+            const profileSnap = await getDoc(doc(db, "profiles", caretakerId));
+            profileCache.set(
+              caretakerId,
+              (profileSnap.data()?.full_name as string | undefined) ?? null
+            );
+          }
+
+          return {
+            id: d.id,
+            caretaker_id: caretakerId,
+            check_in_at: data.check_in_at as string,
+            full_name: profileCache.get(caretakerId) ?? null,
+          };
+        })
+      );
+      setOnDuty(entries);
+    });
+  }, [roomId]);
+
+  const mine = onDuty.find((o) => o.caretaker_id === userId);
 
   function handleCheckIn() {
+    setError(null);
     startTransition(async () => {
-      await checkIn(roomId);
-      router.refresh();
+      const result = await checkIn(roomId, userId);
+      if (!result.ok) setError(result.error);
     });
   }
 
@@ -58,7 +79,6 @@ export function CheckInCard({
     if (!mine) return;
     startTransition(async () => {
       await checkOut(mine.id, roomId);
-      router.refresh();
     });
   }
 
@@ -83,6 +103,8 @@ export function CheckInCard({
           </Button>
         )}
       </div>
+
+      {error && <p className="mt-2 text-sm text-rose-600">{error}</p>}
 
       <ul className="mt-4 space-y-2">
         {onDuty.length === 0 && (

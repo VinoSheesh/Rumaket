@@ -1,11 +1,11 @@
-import Link from "next/link";
+"use client";
 
-export default async function CheckEmailPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ email?: string }>;
-}) {
-  const { email } = await searchParams;
+import { Suspense } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+
+function CheckEmailContent() {
+  const email = useSearchParams().get("email");
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
@@ -46,5 +46,13 @@ export default async function CheckEmailPage({
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CheckEmailPage() {
+  return (
+    <Suspense>
+      <CheckEmailContent />
+    </Suspense>
   );
 }

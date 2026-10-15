@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { User, Settings, LogOut, ChevronDown } from "lucide-react";
+import { User, Settings, LogOut, ChevronDown, Bell } from "lucide-react";
 import { signOut } from "@/app/(auth)/actions";
+import { useAuth } from "@/lib/firebase/auth-context";
+import { subscribeToPush } from "@/lib/push";
 
 interface DashboardHeaderProps {
   userName: string;
@@ -11,9 +13,18 @@ interface DashboardHeaderProps {
 }
 
 export function DashboardHeader({ userName, userEmail }: DashboardHeaderProps) {
+  const { user } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [notifStatus, setNotifStatus] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  async function handleEnableNotifications() {
+    if (!user) return;
+    setNotifStatus("Mengaktifkan…");
+    const result = await subscribeToPush(user.uid);
+    setNotifStatus(result.ok ? "Notifikasi aktif ✓" : result.error);
+  }
 
   // Efek scroll untuk mengubah style header melayang
   useEffect(() => {
@@ -101,6 +112,15 @@ export function DashboardHeader({ userName, userEmail }: DashboardHeaderProps) {
                   <User className="w-4 h-4 text-slate-500" />
                   <span>Lihat Akun</span>
                 </Link>
+
+                <button
+                  type="button"
+                  onClick={handleEnableNotifications}
+                  className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                >
+                  <Bell className="w-4 h-4 text-slate-500" />
+                  <span>{notifStatus ?? "Aktifkan Notifikasi"}</span>
+                </button>
 
                 <Link
                   href="/dashboard/settings"

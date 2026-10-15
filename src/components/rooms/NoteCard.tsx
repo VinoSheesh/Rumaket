@@ -1,3 +1,4 @@
+import { getNotePhotoUrl } from "@/lib/storage";
 import { Badge } from "@/components/ui/Badge";
 import { NOTE_CATEGORIES } from "@/lib/constants";
 import type { Note } from "@/lib/types";
@@ -5,11 +6,10 @@ import type { Note } from "@/lib/types";
 export function NoteCard({
   note,
 }: {
-  note: Note & {
-    profiles?: { full_name: string | null } | null;
-    signedUrl?: string | null;
-  };
+  note: Note & { full_name?: string | null };
 }) {
+  const photoUrl = note.photo_url ? getNotePhotoUrl(note.photo_url) : null;
+
   return (
     <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
       <div className="flex items-center justify-between gap-3">
@@ -26,15 +26,15 @@ export function NoteCard({
         </span>
       </div>
       <p className="mt-2 text-sm font-medium text-slate-800">
-        {note.profiles?.full_name ?? "Rumaket"}
+        {note.full_name ?? "Rumaket"}
       </p>
       <p className="mt-1 whitespace-pre-wrap text-sm text-slate-600">
         {note.content}
       </p>
-      {note.signedUrl && (
+      {photoUrl && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={note.signedUrl}
+          src={photoUrl}
           alt="Lampiran catatan"
           className="mt-3 max-h-64 rounded-md border border-slate-200 object-cover"
         />

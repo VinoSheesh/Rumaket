@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import {
   completeSchedule,
   resetSchedule,
   skipSchedule,
-} from "@/app/rooms/[roomId]/schedule/actions";
+} from "@/app/room/schedule/actions";
 import { SCHEDULE_CATEGORIES, SCHEDULE_STATUS } from "@/lib/constants";
 import type { Schedule } from "@/lib/types";
 
@@ -19,7 +18,6 @@ export function ScheduleItem({
   schedule: Schedule;
   roomId: string;
 }) {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [showSkipForm, setShowSkipForm] = useState(false);
   const [reason, setReason] = useState("");
@@ -29,23 +27,20 @@ export function ScheduleItem({
 
   function handleComplete() {
     startTransition(async () => {
-      await completeSchedule(schedule.id, roomId);
-      router.refresh();
+      await completeSchedule(roomId, schedule.id);
     });
   }
 
   function handleReset() {
     startTransition(async () => {
-      await resetSchedule(schedule.id, roomId);
-      router.refresh();
+      await resetSchedule(roomId, schedule.id);
     });
   }
 
   function handleSkip() {
     startTransition(async () => {
-      await skipSchedule(schedule.id, roomId, reason);
+      await skipSchedule(roomId, schedule.id, reason);
       setShowSkipForm(false);
-      router.refresh();
     });
   }
 

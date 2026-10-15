@@ -1,26 +1,25 @@
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+"use client";
+
+import { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase/client";
+import { useAuth } from "@/lib/firebase/auth-context";
+import { RequireAuth } from "@/lib/firebase/guard";
 import { DashboardHeader } from "@/components/dashboard/Header";
-export default async function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const supabase = await createClient();
-  const { data } = await supabase.auth.getUser();
 
-  if (!data.user) {
-    redirect("/login");
-  }
+function DashboardChrome({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth();
+  const [fullName, setFullName] = useState<string | null>(null);
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("full_name")
-    .eq("id", data.user.id)
-    .single();
+  useEffect(() => {
+    if (!user) return;
+    getDoc(doc(db, "profiles", user.uid)).then((snap) => {
+      setFullName((snap.data()?.full_name as string | undefined) ?? null);
+    });
+  }, [user]);
 
-  const userName = profile?.full_name ?? data.user.email?.split("@")[0] ?? "User";
-  const userEmail = data.user.email ?? "";
+  const userName = fullName ?? user?.email?.split("@")[0] ?? "User";
+  const userEmail = user?.email ?? "";
 
   return (
     <div className="min-h-screen bg-slate-50/50">
@@ -29,5 +28,17 @@ export default async function DashboardLayout({
         {children}
       </main>
     </div>
+  );
+}
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <RequireAuth>
+      <DashboardChrome>{children}</DashboardChrome>
+    </RequireAuth>
   );
 }

@@ -1,0 +1,112 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isMember(roomId) {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/patient_rooms/$(roomId)/members/$(request.auth.uid));
+    }
+
+    function isOwner(roomId) {
+      return isMember(roomId) &&
+        get(/databases/$(database)/documents/patient_rooms/$(roomId)/members/$(request.auth.uid)).data.role == 'owner';
+    }
+
+    // Profiles are simplified to "readable by any signed-in user" (only
+    // holds full_name/phone) instead of replicating the original
+    // roommates-only Supabase RLS policy, since Firestore rules can't
+    // cheaply express "share a room with" without an extra read.
+    match /profiles/{uid} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Invite-code -> room_id lookup table. Doc id IS the code, so clients
+    // only ever `get()` a code they already typed — no `list` is ever needed
+    // or allowed, which keeps codes unguessable (~40 bits of entropy, same
+    // as the original 8-char alphabet).
+    match /invite_codes/{code} {
+      allow get: if isSignedIn();
+      allow create: if isSignedIn() &&
+        get(/databases/$(database)/documents/patient_rooms/$(request.resource.data.room_id)).data.created_by == request.auth.uid;
+      allow update, delete, list: if false;
+    }
+
+    match /patient_rooms/{roomId} {
+      allow get: if isMember(roomId);
+      allow list: if false; // dashboard uses the collectionGroup(members) rule below instead
+      allow create: if isSignedIn() && request.resource.data.created_by == request.auth.uid;
+      allow update, delete: if isOwner(roomId);
+
+      match /members/{memberId} {
+        allow get: if isSignedIn() && (request.auth.uid == memberId || isMember(roomId));
+        allow list: if isMember(roomId);
+        allow create: if isSignedIn() && request.auth.uid == memberId &&
+          request.resource.data.user_id == request.auth.uid &&
+          (
+            // Room creator self-assigns as owner right after `patient_rooms`
+            // is created (two sequential writes, so this `get()` already
+            // sees the committed room doc).
+            (request.resource.data.role == 'owner' &&
+              get(/databases/$(database)/documents/patient_rooms/$(roomId)).data.created_by == request.auth.uid) ||
+            // Anyone else joins as caretaker, but only by proving they hold
+            // a code that really maps to this room (mirrors the old
+            // `join_room_by_code` RPC's server-side validation).
+            (request.resource.data.role == 'caretaker' &&
+              get(/databases/$(database)/documents/invite_codes/$(request.resource.data.joined_via_code)).data.room_id == roomId)
+          );
+        allow delete: if isOwner(roomId) || request.auth.uid == memberId;
+        allow update: if false;
+      }
+
+      match /schedules/{id} {
+        allow read: if isMember(roomId);
+        allow create: if isMember(roomId) && request.resource.data.created_by == request.auth.uid;
+        allow update: if isMember(roomId);
+        allow delete: if isOwner(roomId) ||
+          (isMember(roomId) && resource.data.created_by == request.auth.uid);
+      }
+
+      match /attendances/{id} {
+        allow read: if isMember(roomId);
+        allow create: if isMember(roomId) && request.resource.data.caretaker_id == request.auth.uid;
+        allow update: if isMember(roomId) && resource.data.caretaker_id == request.auth.uid;
+        allow delete: if false;
+      }
+
+      match /notes/{id} {
+        allow read: if isMember(roomId);
+        allow create: if isMember(roomId) && request.resource.data.caretaker_id == request.auth.uid;
+        allow update: if isMember(roomId) && resource.data.caretaker_id == request.auth.uid;
+        allow delete: if isOwner(roomId) ||
+          (isMember(roomId) && resource.data.caretaker_id == request.auth.uid);
+      }
+    }
+
+    // collectionGroup queries used by the dashboard ("rooms I belong to")
+    // and the check-in guard ("am I on duty anywhere else"). Firestore only
+    // allows these when the query's own `where` clause matches the rule's
+    // condition, so an unfiltered cross-user scan is rejected.
+    match /{path=**}/members/{memberId} {
+      allow list: if isSignedIn() && resource.data.user_id == request.auth.uid;
+    }
+
+    match /{path=**}/attendances/{id} {
+      allow list: if isSignedIn() && resource.data.caretaker_id == request.auth.uid;
+    }
+
+    // Written by clients (subscribe) and read only by the GitHub Actions
+    // reminder job via the Admin SDK, which bypasses these rules entirely.
+    match /push_subscriptions/{id} {
+      allow get, list: if isSignedIn() && resource.data.user_id == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.user_id == request.auth.uid;
+      allow delete: if isSignedIn() && resource.data.user_id == request.auth.uid;
+      allow update: if false;
+    }
+  }
+}

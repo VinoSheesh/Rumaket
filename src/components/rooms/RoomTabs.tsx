@@ -11,24 +11,23 @@ export function RoomTabs({
   isOwner: boolean;
 }) {
   const pathname = usePathname();
-  const base = `/rooms/${roomId}`;
 
   const tabs = [
-    { href: base, label: "Overview" },
-    { href: `${base}/schedule`, label: "Schedule" },
-    { href: `${base}/notes`, label: "Notes" },
-    { href: `${base}/attendance`, label: "Attendance" },
-    ...(isOwner ? [{ href: `${base}/caretakers`, label: "CareTakers" }] : []),
+    { path: "/room", label: "Overview" },
+    { path: "/room/schedule", label: "Schedule" },
+    { path: "/room/notes", label: "Notes" },
+    { path: "/room/attendance", label: "Attendance" },
+    ...(isOwner ? [{ path: "/room/caretakers", label: "CareTakers" }] : []),
   ];
 
   return (
     <nav className="-mb-px mt-4 flex gap-1 overflow-x-auto border-b border-slate-200">
       {tabs.map((tab) => {
-        const isActive = pathname === tab.href;
+        const isActive = pathname === tab.path;
         return (
           <Link
-            key={tab.href}
-            href={tab.href}
+            key={tab.path}
+            href={`${tab.path}?id=${roomId}`}
             className={`whitespace-nowrap border-b-2 px-3 py-2 text-sm font-medium transition-colors ${
               isActive
                 ? "border-brand-700 text-brand-700"

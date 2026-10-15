@@ -1,16 +1,15 @@
+"use client";
+
+import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowLeft, Sparkles } from "lucide-react";
-import { RegisterForm } from "@/components/auth/RegisterForm"; // Sesuaikan path impor komponen di atas
+import { useSearchParams } from "next/navigation";
+import { RegisterForm } from "@/components/auth/RegisterForm";
 import Image from "next/image";
 
-export default async function RegisterPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string; join_code?: string }>;
-}) {
-  const resolvedParams = await searchParams;
-  const error = resolvedParams?.error;
-  const join_code = resolvedParams?.join_code;
+function RegisterContent() {
+  const searchParams = useSearchParams();
+  const joinCode = searchParams.get("join_code");
 
   return (
     <div className="h-screen w-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 flex overflow-hidden">
@@ -61,7 +60,7 @@ export default async function RegisterPage({
             </Link>
           </div>
 
-          {join_code && (
+          {joinCode && (
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 px-3 py-1.5 text-xs font-medium text-amber-800 shadow-sm">
               <Sparkles className="h-3.5 w-3.5" />
               Ada kode undangan menunggu!
@@ -73,25 +72,19 @@ export default async function RegisterPage({
               Daftar
             </h1>
             <p className="text-base leading-relaxed text-slate-600">
-              {join_code
+              {joinCode
                 ? "Daftar dahulu, lalu masukkan kode undangan untuk bergabung."
                 : "Buat akun untuk mengelola room lansia atau bergabung sebagai caretaker."}
             </p>
           </div>
 
-          {error && (
-            <div className="mb-6 rounded-xl border border-rose-200 bg-gradient-to-br from-rose-50 to-rose-100/50 px-4 py-3 shadow-sm">
-              <p className="text-sm font-medium text-rose-700">{error}</p>
-            </div>
-          )}
-
           <RegisterForm />
 
-          {join_code && (
+          {joinCode && (
             <p className="mt-6 text-center text-sm text-slate-600 bg-amber-50/50 rounded-xl px-4 py-3 border border-amber-100">
               Setelah daftar, masukkan kode{" "}
               <span className="font-mono font-semibold text-blue-600">
-                {join_code}
+                {joinCode}
               </span>{" "}
               di halaman{" "}
               <Link
@@ -123,5 +116,13 @@ export default async function RegisterPage({
         </div>
       </div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense>
+      <RegisterContent />
+    </Suspense>
   );
 }

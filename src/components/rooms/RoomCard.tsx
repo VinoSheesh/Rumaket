@@ -17,7 +17,7 @@ export function RoomCard({
 }) {
   return (
     <Link
-      href={`/rooms/${id}`}
+      href={`/room?id=${id}`}
       className="block rounded-md border border-slate-200 bg-slate-50 p-5 transition-colors hover:border-brand-400 hover:bg-white"
     >
       <div className="flex items-start justify-between gap-3">

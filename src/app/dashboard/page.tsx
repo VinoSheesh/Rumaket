@@ -1,31 +1,61 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import {
+  collectionGroup,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase/client";
+import { useAuth } from "@/lib/firebase/auth-context";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { RoomCard } from "@/components/rooms/RoomCard";
 import type { RoomRole } from "@/lib/types";
 
-interface MembershipRow {
+type RoomListItem = {
+  id: string;
+  name: string;
+  patient_name: string;
+  invite_code: string;
   role: RoomRole;
-  patient_rooms: {
-    id: string;
-    name: string;
-    patient_name: string;
-    invite_code: string;
-  } | null;
-}
+};
 
-export default async function DashboardPage() {
-  const supabase = await createClient();
-  const { data: userData } = await supabase.auth.getUser();
+export default function DashboardPage() {
+  const { user } = useAuth();
+  const [rooms, setRooms] = useState<RoomListItem[] | null>(null);
 
-  const { data: memberships } = await supabase
-    .from("room_members")
-    .select("role, patient_rooms(id, name, patient_name, invite_code)")
-    .eq("user_id", userData.user!.id)
-    .returns<MembershipRow[]>();
+  useEffect(() => {
+    if (!user) return;
 
-  const rooms = (memberships ?? []).filter((m) => m.patient_rooms);
+    (async () => {
+      const memberSnap = await getDocs(
+        query(collectionGroup(db, "members"), where("user_id", "==", user.uid))
+      );
+
+      const items = await Promise.all(
+        memberSnap.docs.map(async (memberDoc) => {
+          const roomId = memberDoc.data().room_id as string;
+          const roomSnap = await getDoc(doc(db, "patient_rooms", roomId));
+          if (!roomSnap.exists()) return null;
+          const roomData = roomSnap.data();
+          return {
+            id: roomSnap.id,
+            name: roomData.name as string,
+            patient_name: roomData.patient_name as string,
+            invite_code: roomData.invite_code as string,
+            role: memberDoc.data().role as RoomRole,
+          };
+        })
+      );
+
+      setRooms(items.filter((r): r is RoomListItem => r !== null));
+    })();
+  }, [user]);
 
   return (
     <div>
@@ -49,7 +79,9 @@ export default async function DashboardPage() {
       </div>
 
       <div className="mt-8">
-        {rooms.length === 0 ? (
+        {rooms === null ? (
+          <p className="text-sm text-slate-500">Memuat…</p>
+        ) : rooms.length === 0 ? (
           <EmptyState
             icon="🏠"
             title="Belum ada room lansia"
@@ -62,14 +94,14 @@ export default async function DashboardPage() {
           />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
-            {rooms.map((m) => (
+            {rooms.map((r) => (
               <RoomCard
-                key={m.patient_rooms!.id}
-                id={m.patient_rooms!.id}
-                name={m.patient_rooms!.name}
-                patientName={m.patient_rooms!.patient_name}
-                inviteCode={m.patient_rooms!.invite_code}
-                role={m.role}
+                key={r.id}
+                id={r.id}
+                name={r.name}
+                patientName={r.patient_name}
+                inviteCode={r.invite_code}
+                role={r.role}
               />
             ))}
           </div>

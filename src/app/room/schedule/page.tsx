@@ -1,41 +1,59 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getRoomContext } from "@/lib/rooms";
+import { useSearchParams } from "next/navigation";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase/client";
+import { useRoomContext } from "@/lib/firebase/room-context";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ScheduleItem } from "@/components/rooms/ScheduleItem";
 import { SCHEDULE_CATEGORIES, TIME_SLOTS } from "@/lib/constants";
 import type { Schedule, ScheduleCategory, TimeSlot } from "@/lib/types";
 
-export default async function SchedulePage({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ roomId: string }>;
-  searchParams: Promise<{ time_slot?: string; category?: string }>;
-}) {
-  const { roomId } = await params;
-  const { time_slot, category } = await searchParams;
-  const { supabase } = await getRoomContext(roomId);
+export default function SchedulePage() {
+  const { room } = useRoomContext();
+  const searchParams = useSearchParams();
+  const timeSlot = searchParams.get("time_slot") ?? undefined;
+  const category = searchParams.get("category") ?? undefined;
+  const roomId = room.id;
 
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
   const today = new Date().toISOString().slice(0, 10);
 
-  let query = supabase
-    .from("schedules")
-    .select("*")
-    .eq("room_id", roomId)
-    .eq("scheduled_date", today)
-    .order("specific_time", { ascending: true, nullsFirst: true });
+  useEffect(() => {
+    const clauses = [where("scheduled_date", "==", today)];
+    if (timeSlot) clauses.push(where("time_slot", "==", timeSlot as TimeSlot));
+    if (category) clauses.push(where("category", "==", category as ScheduleCategory));
 
-  if (time_slot) query = query.eq("time_slot", time_slot as TimeSlot);
-  if (category) query = query.eq("category", category as ScheduleCategory);
+    const q = query(
+      collection(db, "patient_rooms", roomId, "schedules"),
+      ...clauses,
+      orderBy("specific_time", "asc")
+    );
 
-  const { data: schedules } = await query.returns<Schedule[]>();
+    return onSnapshot(q, (snap) => {
+      setSchedules(
+        snap.docs.map((d) => ({
+          id: d.id,
+          ...(d.data() as Omit<Schedule, "id">),
+        }))
+      );
+    });
+  }, [roomId, today, timeSlot, category]);
 
   const slotOrder: TimeSlot[] = ["morning", "afternoon", "evening", "custom"];
   const grouped = slotOrder
     .map((slot) => ({
       slot,
-      items: (schedules ?? []).filter((s) => s.time_slot === slot),
+      items: schedules.filter((s) => s.time_slot === slot),
     }))
     .filter((g) => g.items.length > 0);
 
@@ -55,24 +73,24 @@ export default async function SchedulePage({
             })}
           </p>
         </div>
-        <Link href={`/rooms/${roomId}/schedule/new`}>
+        <Link href={`/room/schedule/new?id=${roomId}`}>
           <Button>+ Tambah Tugas</Button>
         </Link>
       </div>
 
       <div className="mt-5 flex flex-wrap gap-2">
         <FilterChip
-          href={`/rooms/${roomId}/schedule`}
-          active={!time_slot}
+          href={`/room/schedule?id=${roomId}`}
+          active={!timeSlot}
           label="Semua Waktu"
         />
         {Object.entries(TIME_SLOTS).map(([key, v]) => (
           <FilterChip
             key={key}
-            href={`/rooms/${roomId}/schedule?time_slot=${key}${
+            href={`/room/schedule?id=${roomId}&time_slot=${key}${
               category ? `&category=${category}` : ""
             }`}
-            active={time_slot === key}
+            active={timeSlot === key}
             label={v.label}
           />
         ))}
@@ -80,8 +98,8 @@ export default async function SchedulePage({
 
       <div className="mt-2 flex flex-wrap gap-2">
         <FilterChip
-          href={`/rooms/${roomId}/schedule${
-            time_slot ? `?time_slot=${time_slot}` : ""
+          href={`/room/schedule?id=${roomId}${
+            timeSlot ? `&time_slot=${timeSlot}` : ""
           }`}
           active={!category}
           label="Semua Kategori"
@@ -89,8 +107,8 @@ export default async function SchedulePage({
         {Object.entries(SCHEDULE_CATEGORIES).map(([key, v]) => (
           <FilterChip
             key={key}
-            href={`/rooms/${roomId}/schedule?category=${key}${
-              time_slot ? `&time_slot=${time_slot}` : ""
+            href={`/room/schedule?id=${roomId}&category=${key}${
+              timeSlot ? `&time_slot=${timeSlot}` : ""
             }`}
             active={category === key}
             label={`${v.icon} ${v.label}`}
@@ -105,7 +123,7 @@ export default async function SchedulePage({
             title="Belum ada tugas untuk hari ini"
             description="Tambahkan tugas pertama — pengobatan, makan, kebersihan, tanda vital, atau terapi."
             action={
-              <Link href={`/rooms/${roomId}/schedule/new`}>
+              <Link href={`/room/schedule/new?id=${roomId}`}>
                 <Button>Tambah Tugas</Button>
               </Link>
             }

@@ -1,34 +1,84 @@
-import { notFound } from "next/navigation";
-import { getRoomContext } from "@/lib/rooms";
+"use client";
+
+import { useEffect, useState, useTransition } from "react";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase/client";
+import { useRoomContext } from "@/lib/firebase/room-context";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { removeCaretaker } from "@/app/rooms/[roomId]/caretakers/actions";
+import { removeCaretaker } from "@/app/room/caretakers/actions";
 import type { RoomMember } from "@/lib/types";
 
 type MemberRow = RoomMember & {
-  profiles: { full_name: string | null; phone: string | null } | null;
+  full_name: string | null;
+  phone: string | null;
 };
 
-export default async function CaretakersPage({
-  params,
-}: {
-  params: Promise<{ roomId: string }>;
-}) {
-  const { roomId } = await params;
-  const { supabase, room, membership } = await getRoomContext(roomId);
+export default function CaretakersPage() {
+  const { room, membership } = useRoomContext();
+  const [members, setMembers] = useState<MemberRow[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
-  if (membership.role !== "owner") {
-    notFound();
+  async function loadMembers() {
+    const snap = await getDocs(
+      query(
+        collection(db, "patient_rooms", room.id, "members"),
+        orderBy("created_at", "asc")
+      )
+    );
+
+    const rows = await Promise.all(
+      snap.docs.map(async (d) => {
+        const data = d.data();
+        const profileSnap = await getDoc(doc(db, "profiles", data.user_id as string));
+        const profile = profileSnap.data();
+        return {
+          id: d.id,
+          room_id: room.id,
+          user_id: data.user_id as string,
+          role: data.role as RoomMember["role"],
+          created_at: data.created_at as string,
+          full_name: (profile?.full_name as string | undefined) ?? null,
+          phone: (profile?.phone as string | undefined) ?? null,
+        };
+      })
+    );
+
+    setMembers(rows);
   }
 
-  const { data: membersRaw } = await supabase
-    .from("room_members")
-    .select("*, profiles(full_name, phone)")
-    .eq("room_id", roomId)
-    .order("created_at", { ascending: true })
-    .returns<MemberRow[]>();
+  useEffect(() => {
+    loadMembers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [room.id]);
 
-  const members = membersRaw ?? [];
+  if (membership.role !== "owner") {
+    return (
+      <p className="text-sm text-slate-500">
+        Hanya owner yang dapat mengelola caretaker.
+      </p>
+    );
+  }
+
+  function handleRemove(memberId: string) {
+    setError(null);
+    startTransition(async () => {
+      const result = await removeCaretaker(room.id, memberId);
+      if (!result.ok) {
+        setError(result.error);
+        return;
+      }
+      await loadMembers();
+    });
+  }
 
   return (
     <div>
@@ -50,6 +100,12 @@ export default async function CaretakersPage({
         </div>
       </div>
 
+      {error && (
+        <p className="mt-4 rounded-sm border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+          {error}
+        </p>
+      )}
+
       <div className="mt-6 overflow-hidden rounded-md border border-slate-200 bg-white">
         <table className="w-full text-sm">
           <thead>
@@ -64,7 +120,7 @@ export default async function CaretakersPage({
             {members.map((m) => (
               <tr key={m.id} className="border-b border-slate-100 last:border-b-0">
                 <td className="px-4 py-3 font-medium text-slate-800">
-                  {m.profiles?.full_name ?? "—"}
+                  {m.full_name ?? "—"}
                 </td>
                 <td className="px-4 py-3">
                   <Badge
@@ -86,11 +142,15 @@ export default async function CaretakersPage({
                 </td>
                 <td className="px-4 py-3 text-right">
                   {m.role !== "owner" && (
-                    <form action={removeCaretaker.bind(null, m.id, roomId)}>
-                      <Button type="submit" variant="danger" size="sm">
-                        Hapus
-                      </Button>
-                    </form>
+                    <Button
+                      type="button"
+                      variant="danger"
+                      size="sm"
+                      disabled={isPending}
+                      onClick={() => handleRemove(m.id)}
+                    >
+                      Hapus
+                    </Button>
                   )}
                 </td>
               </tr>

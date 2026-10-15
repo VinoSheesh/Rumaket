@@ -1,11 +1,14 @@
-import { getRoomContext } from "@/lib/rooms";
+"use client";
+
+import { useEffect, useState } from "react";
+import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
+import { db } from "@/lib/firebase/client";
+import { useRoomContext } from "@/lib/firebase/room-context";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Badge } from "@/components/ui/Badge";
 import type { Attendance } from "@/lib/types";
 
-type AttendanceRow = Attendance & {
-  profiles: { full_name: string | null } | null;
-};
+type AttendanceRow = Attendance & { full_name: string | null };
 
 function formatDuration(checkIn: string, checkOut: string | null) {
   const start = new Date(checkIn).getTime();
@@ -16,22 +19,47 @@ function formatDuration(checkIn: string, checkOut: string | null) {
   return hours > 0 ? `${hours}j ${mins}m` : `${mins}m`;
 }
 
-export default async function AttendancePage({
-  params,
-}: {
-  params: Promise<{ roomId: string }>;
-}) {
-  const { roomId } = await params;
-  const { supabase } = await getRoomContext(roomId);
+export default function AttendancePage() {
+  const { room } = useRoomContext();
+  const [logs, setLogs] = useState<AttendanceRow[]>([]);
 
-  const { data: logsRaw } = await supabase
-    .from("attendances")
-    .select("*, profiles(full_name)")
-    .eq("room_id", roomId)
-    .order("check_in_at", { ascending: false })
-    .returns<AttendanceRow[]>();
+  useEffect(() => {
+    (async () => {
+      const snap = await getDocs(
+        query(
+          collection(db, "patient_rooms", room.id, "attendances"),
+          orderBy("check_in_at", "desc")
+        )
+      );
 
-  const logs = logsRaw ?? [];
+      const profileCache = new Map<string, string | null>();
+
+      const rows = await Promise.all(
+        snap.docs.map(async (d) => {
+          const data = d.data();
+          const caretakerId = data.caretaker_id as string;
+          if (!profileCache.has(caretakerId)) {
+            const profileSnap = await getDoc(doc(db, "profiles", caretakerId));
+            profileCache.set(
+              caretakerId,
+              (profileSnap.data()?.full_name as string | undefined) ?? null
+            );
+          }
+          return {
+            id: d.id,
+            room_id: room.id,
+            caretaker_id: caretakerId,
+            check_in_at: data.check_in_at as string,
+            check_out_at: (data.check_out_at as string | null) ?? null,
+            status: data.status as Attendance["status"],
+            full_name: profileCache.get(caretakerId) ?? null,
+          };
+        })
+      );
+
+      setLogs(rows);
+    })();
+  }, [room.id]);
 
   return (
     <div>
@@ -68,7 +96,7 @@ export default async function AttendancePage({
                     className="border-b border-slate-100 last:border-b-0"
                   >
                     <td className="px-4 py-3 font-medium text-slate-800">
-                      {log.profiles?.full_name ?? "Rumaket"}
+                      {log.full_name ?? "Rumaket"}
                     </td>
                     <td className="px-4 py-3 text-slate-600">
                       {new Date(log.check_in_at).toLocaleString("id-ID", {

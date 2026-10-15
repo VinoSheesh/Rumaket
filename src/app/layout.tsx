@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
+import { AuthProvider } from "@/lib/firebase/auth-context";
 import "./globals.css";
 
 const inter = Inter({
@@ -33,7 +34,7 @@ export const viewport: Viewport = {
   themeColor: "#120080",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
 
@@ -43,7 +44,7 @@ export default async function RootLayout({
       className={`${inter.variable} ${plusJakarta.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-white text-[#0b0b14]">
-        {children}
+        <AuthProvider>{children}</AuthProvider>
         <Script id="register-sw" strategy="afterInteractive">
           {`
             if ('serviceWorker' in navigator) {

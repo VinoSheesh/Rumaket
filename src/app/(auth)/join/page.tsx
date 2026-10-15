@@ -1,19 +1,45 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/firebase/auth-context";
 import { joinRoomByCode } from "@/app/(auth)/actions";
 import { Button } from "@/components/ui/Button";
 import { Input, Label } from "@/components/ui/Field";
 import { KeyRound } from "lucide-react";
 
-export default async function JoinPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>;
-}) {
-  const { error } = await searchParams;
+export default function JoinPage() {
+  const { user } = useAuth();
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const code = String(formData.get("code") ?? "").trim().toUpperCase();
+
+    if (!user) {
+      router.push(`/register?join_code=${encodeURIComponent(code)}`);
+      return;
+    }
+
+    setError(null);
+    setIsSubmitting(true);
+    const result = await joinRoomByCode(user.uid, formData);
+    setIsSubmitting(false);
+
+    if (!result.ok) {
+      setError(result.error);
+      return;
+    }
+
+    router.push(`/room?id=${result.roomId}`);
+  }
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-8 shadow-2xl shadow-slate-900/5 backdrop-blur-sm md:p-10">
-      {/* Subtle gradient overlay */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-white via-warmth-50/20 to-accent-50/30" />
 
       <div className="relative">
@@ -35,7 +61,7 @@ export default async function JoinPage({
           </div>
         )}
 
-        <form action={joinRoomByCode} className="mt-8 space-y-5">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <div>
             <Label htmlFor="code">Kode Undangan</Label>
             <Input
@@ -52,7 +78,7 @@ export default async function JoinPage({
               Kode terdiri dari 8 karakter huruf/angka
             </p>
           </div>
-          <Button type="submit" className="w-full" size="lg">
+          <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
             Gabung
           </Button>
         </form>

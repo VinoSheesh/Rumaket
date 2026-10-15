@@ -1,17 +1,15 @@
+"use client";
+
+import { Suspense, type ReactNode } from "react";
 import Link from "next/link";
-import { getRoomContext } from "@/lib/rooms";
+import { useSearchParams } from "next/navigation";
+import { RequireAuth } from "@/lib/firebase/guard";
+import { RoomProvider, useRoomContext } from "@/lib/firebase/room-context";
 import { Badge } from "@/components/ui/Badge";
 import { RoomTabs } from "@/components/rooms/RoomTabs";
 
-export default async function RoomLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: Promise<{ roomId: string }>;
-}) {
-  const { roomId } = await params;
-  const { room, membership } = await getRoomContext(roomId);
+function RoomShell({ children }: { children: ReactNode }) {
+  const { room, membership } = useRoomContext();
   const isOwner = membership.role === "owner";
 
   return (
@@ -40,12 +38,40 @@ export default async function RoomLayout({
               {isOwner ? "Owner" : "CareTaker"}
             </Badge>
           </div>
-          <RoomTabs roomId={roomId} isOwner={isOwner} />
+          <RoomTabs roomId={room.id} isOwner={isOwner} />
         </div>
       </header>
       <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-8">
         {children}
       </main>
     </div>
+  );
+}
+
+function RoomLayoutInner({ children }: { children: ReactNode }) {
+  const roomId = useSearchParams().get("id") ?? "";
+
+  return (
+    <RoomProvider roomId={roomId}>
+      <RoomShell>{children}</RoomShell>
+    </RoomProvider>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-slate-50">
+      <p className="text-sm text-slate-500">Memuat…</p>
+    </div>
+  );
+}
+
+export default function RoomLayout({ children }: { children: ReactNode }) {
+  return (
+    <RequireAuth>
+      <Suspense fallback={<LoadingFallback />}>
+        <RoomLayoutInner>{children}</RoomLayoutInner>
+      </Suspense>
+    </RequireAuth>
   );
 }

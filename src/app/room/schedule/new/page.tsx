@@ -1,23 +1,38 @@
+"use client";
+
+import { useState, useTransition } from "react";
 import Link from "next/link";
-import { createSchedule } from "@/app/rooms/[roomId]/schedule/actions";
+import { useRouter } from "next/navigation";
+import { useRoomContext } from "@/lib/firebase/room-context";
+import { createSchedule } from "@/app/room/schedule/actions";
 import { Button } from "@/components/ui/Button";
 import { Input, Label, Select, Textarea } from "@/components/ui/Field";
 import { SCHEDULE_CATEGORIES, TIME_SLOTS } from "@/lib/constants";
 
-export default async function NewSchedulePage({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ roomId: string }>;
-  searchParams: Promise<{ error?: string }>;
-}) {
-  const { roomId } = await params;
-  const { error } = await searchParams;
+export default function NewSchedulePage() {
+  const { room, userId } = useRoomContext();
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
   const today = new Date().toISOString().slice(0, 10);
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    setError(null);
+    startTransition(async () => {
+      const result = await createSchedule(room.id, userId, formData);
+      if (!result.ok) {
+        setError(result.error);
+        return;
+      }
+      router.push(`/room/schedule?id=${room.id}`);
+    });
+  }
 
   return (
     <div className="max-w-md">
-      <Link href={`/rooms/${roomId}/schedule`} className="text-sm text-slate-500">
+      <Link href={`/room/schedule?id=${room.id}`} className="text-sm text-slate-500">
         ← Kembali
       </Link>
       <h1 className="mt-3 font-display text-xl font-bold text-slate-900">
@@ -31,7 +46,7 @@ export default async function NewSchedulePage({
       )}
 
       <form
-        action={createSchedule.bind(null, roomId)}
+        onSubmit={handleSubmit}
         className="mt-6 space-y-4 rounded-md border border-slate-200 bg-white p-6"
       >
         <div>
@@ -83,7 +98,7 @@ export default async function NewSchedulePage({
           <Label htmlFor="description">Catatan (opsional)</Label>
           <Textarea id="description" name="description" rows={3} />
         </div>
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={isPending}>
           Simpan Tugas
         </Button>
       </form>
