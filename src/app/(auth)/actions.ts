@@ -34,7 +34,7 @@ export async function signUp(formData: FormData) {
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: { data: { full_name: fullName } },
@@ -42,6 +42,11 @@ export async function signUp(formData: FormData) {
 
   if (error) {
     redirect(`/register?error=${encodeURIComponent(error.message)}`);
+  }
+
+  // Redirect to check-email page if email confirmation is required
+  if (!data.session) {
+    redirect("/check-email?email=" + encodeURIComponent(email));
   }
 
   redirect("/dashboard");
@@ -69,15 +74,45 @@ export async function joinRoomByCode(formData: FormData) {
     );
   }
 
-  const { data, error } = await supabase.rpc("join_room_by_code", { code });
+  // Find room by code
+  const { data: room } = await supabase
+    .from("patient_rooms")
+    .select("id")
+    .eq("invite_code", code)
+    .single();
 
-  if (error || !data) {
+  if (!room) {
     redirect(
-      `/join?error=${encodeURIComponent(
-        error?.message ?? "Kode undangan tidak valid"
-      )}`
+      `/join?error=${encodeURIComponent("Kode undangan tidak valid")}`
     );
   }
 
-  redirect(`/rooms/${data}`);
+  // Check if already a member (handles race condition from double-click)
+  const { data: existingMembership } = await supabase
+    .from("room_members")
+    .select("id")
+    .eq("room_id", room.id)
+    .eq("user_id", userData.user.id)
+    .single();
+
+  if (existingMembership) {
+    redirect(`/rooms/${room.id}`);
+  }
+
+  // Add as new member
+  const { error } = await supabase
+    .from("room_members")
+    .insert({
+      room_id: room.id,
+      user_id: userData.user.id,
+      role: "caretaker",
+    });
+
+  if (error) {
+    redirect(
+      `/join?error=${encodeURIComponent(error.message)}`
+    );
+  }
+
+  redirect(`/rooms/${room.id}`);
 }
