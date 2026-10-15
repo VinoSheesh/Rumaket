@@ -6,7 +6,9 @@ import { generateInviteCode } from "@/lib/invite-code";
 
 export async function createRoom(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
-  const patientName = String(formData.get("patient_name") ?? "").trim();
+  const patientName = String(
+    formData.get("patient_name") ?? "",
+  ).trim();
 
   if (!name || !patientName) {
     redirect(
@@ -17,48 +19,59 @@ export async function createRoom(formData: FormData) {
   }
 
   const supabase = await createClient();
-  const { data: userData } = await supabase.auth.getUser();
-  if (!userData.user) redirect("/login");
+  const { data: userData, error: authError } =
+    await supabase.auth.getUser();
 
-  let roomId: string | null = null;
+  if (authError || !userData.user) {
+    redirect("/login");
+  }
+
   let lastError: string | null = null;
 
   for (let attempt = 0; attempt < 10; attempt++) {
     const code = generateInviteCode();
-    const { data, error } = await supabase
+
+    // Diagnostic: INSERT without returning the row.
+    const { error } = await supabase
       .from("patient_rooms")
       .insert({
         name,
         patient_name: patientName,
         invite_code: code,
         created_by: userData.user.id,
-      })
-      .select("id")
-      .single();
-
-    if (!error && data) {
-      roomId = data.id;
-      // Add owner to room_members (required for getRoomContext to work)
-      await supabase.from("room_members").insert({
-        room_id: roomId,
-        user_id: userData.user.id,
-        role: "owner",
       });
+
+    if (!error) {
+      console.log("Plain patient_rooms INSERT succeeded");
       break;
     }
 
-    if (error?.code === "23505") continue; // invite_code collision, retry
-    lastError = error?.message ?? "Gagal membuat room";
+    console.error("Plain patient_rooms INSERT failed:", {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+    });
+
+    if (error.code === "23505") {
+      continue;
+    }
+
+    lastError = error.message;
     break;
   }
 
-  if (!roomId) {
+  if (lastError) {
     redirect(
-      `/dashboard/rooms/new?error=${encodeURIComponent(
-        lastError ?? "Gagal membuat room, coba lagi",
-      )}`,
+      `/dashboard/rooms/new?error=${encodeURIComponent(lastError)}`,
     );
   }
 
-  redirect(`/rooms/${roomId}`);
+  // Temporary diagnostic endpoint: don't redirect to a room yet,
+  // because this test intentionally doesn't retrieve its ID.
+  redirect(
+    `/dashboard/rooms/new?error=${encodeURIComponent(
+      "Tes INSERT selesai. Periksa terminal server untuk hasilnya.",
+    )}`,
+  );
 }
