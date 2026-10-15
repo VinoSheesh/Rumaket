@@ -1,9 +1,6 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { signOut } from "@/app/(auth)/actions";
-import { Button } from "@/components/ui/Button";
-
+import { DashboardHeader } from "@/components/dashboard/Header";
 export default async function DashboardLayout({
   children,
 }: {
@@ -22,31 +19,13 @@ export default async function DashboardLayout({
     .eq("id", data.user.id)
     .single();
 
+  const userName = profile?.full_name ?? data.user.email?.split("@")[0] ?? "User";
+  const userEmail = data.user.email ?? "";
+
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50">
-      <header className="border-b border-slate-200 bg-slate-50">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/dashboard" className="inline-flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-brand-700 text-sm font-bold text-white">
-              C
-            </span>
-            <span className="font-display text-lg font-bold text-slate-900">
-              Rumaket
-            </span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <span className="hidden text-sm text-slate-600 sm:inline">
-              {profile?.full_name ?? data.user.email}
-            </span>
-            <form action={signOut}>
-              <Button variant="ghost" size="sm" type="submit">
-                Keluar
-              </Button>
-            </form>
-          </div>
-        </div>
-      </header>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-8">
+    <div className="min-h-screen bg-slate-50/50">
+      <DashboardHeader userName={userName} userEmail={userEmail} />
+      <main className="mx-auto w-full max-w-6xl px-6 pt-28 pb-12">
         {children}
       </main>
     </div>
