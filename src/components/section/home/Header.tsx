@@ -27,7 +27,7 @@ export function Header() {
       <header
         className={`w-full transition-all duration-500 ease-in-out ${
           isScrolled
-            ? "max-w-6xl rounded-2xl border border-white/10 bg-slate-950/70 backdrop-blur-2xl shadow-2xl shadow-slate-950/50 py-3"
+            ? "max-w-6xl rounded-4xl border border-white/10 bg-slate-950/50 backdrop-blur-2xl shadow-2xl shadow-slate-950/50 py-3"
             : "max-w-full rounded-none border-b border-transparent bg-transparent py-5"
         }`}
       >
@@ -65,7 +65,7 @@ export function Header() {
 
           <div>
             <Link href="/register">
-              <button className="flex items-center gap-2 bg-white hover:bg-slate-100 text-slate-950 font-medium text-sm px-5 py-2.5 rounded-full border border-white-500/40 backdrop-blur-md shadow-lg transition-all group cursor-pointer">
+              <button className="flex items-center gap-2 bg-white hover:bg-slate-100 text-slate-950 font-medium text-sm px-5 py-2.5 rounded-full  backdrop-blur-md shadow-lg transition-all group cursor-pointer">
                 <span>Daftar Sekarang</span>
                 <span className="w-6 h-6 rounded-full bg-slate-950 text-white flex items-center justify-center transition-transform group-hover:scale-105">
                   <ArrowUpRight className="w-3.5 h-3.5" />
