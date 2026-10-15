@@ -10,10 +10,10 @@ export default function RootLayout({
   const { user } = useAuth();
 
   return (
-    <body className="min-h-full flex flex-col bg-white text-[#0b0b14]">
+    <section className="min-h-full flex flex-col bg-white text-[#0b0b14]">
       <Header isLoggedIn={!!user} />
       {children}
       <Footer />
-    </body>
+    </section>
   );
 }
