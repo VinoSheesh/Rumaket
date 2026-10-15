@@ -23,7 +23,7 @@ export async function createRoom(formData: FormData) {
   let roomId: string | null = null;
   let lastError: string | null = null;
 
-  for (let attempt = 0; attempt < 5; attempt++) {
+  for (let attempt = 0; attempt < 10; attempt++) {
     const code = generateInviteCode();
     const { data, error } = await supabase
       .from("patient_rooms")
@@ -38,6 +38,12 @@ export async function createRoom(formData: FormData) {
 
     if (!error && data) {
       roomId = data.id;
+      // Add owner to room_members (required for getRoomContext to work)
+      await supabase.from("room_members").insert({
+        room_id: roomId,
+        user_id: userData.user.id,
+        role: "owner",
+      });
       break;
     }
 
