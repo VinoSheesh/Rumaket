@@ -5,7 +5,7 @@ import {
 } from "react";
 
 const fieldClasses =
-  "h-11 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-500 focus:border-brand-700 focus:outline-none focus:ring-1 focus:ring-brand-700 disabled:bg-slate-100 disabled:text-slate-500";
+  "h-12 w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm text-slate-900 placeholder:text-slate-400 transition-all focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20 disabled:bg-slate-100 disabled:text-slate-500";
 
 export function Label({
   children,
@@ -17,7 +17,7 @@ export function Label({
   return (
     <label
       htmlFor={htmlFor}
-      className="mb-1 block text-sm font-medium text-slate-700"
+      className="mb-2 block text-sm font-semibold text-slate-700"
     >
       {children}
     </label>
