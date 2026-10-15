@@ -4,7 +4,11 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ArrowUpRight } from "lucide-react";
 
-export function Header() {
+interface HeaderProps {
+  isLoggedIn?: boolean;
+}
+
+export function Header({ isLoggedIn = false }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -64,14 +68,25 @@ export function Header() {
           </nav>
 
           <div>
-            <Link href="/register">
-              <button className="flex items-center gap-2 bg-white hover:bg-slate-100 text-slate-950 font-medium text-sm px-5 py-2.5 rounded-full  backdrop-blur-md shadow-lg transition-all group cursor-pointer">
-                <span>Daftar Sekarang</span>
-                <span className="w-6 h-6 rounded-full bg-slate-950 text-white flex items-center justify-center transition-transform group-hover:scale-105">
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </span>
-              </button>
-            </Link>
+            {isLoggedIn ? (
+              <Link href="/dashboard">
+                <button className="flex items-center gap-2 bg-white hover:bg-slate-100 text-slate-950 font-medium text-sm px-5 py-2.5 rounded-full backdrop-blur-md shadow-lg transition-all group cursor-pointer">
+                  <span>Area Keluarga</span>
+                  <span className="w-6 h-6 rounded-full bg-slate-950 text-white flex items-center justify-center transition-transform group-hover:scale-105">
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </span>
+                </button>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <button className="flex items-center gap-2 bg-white hover:bg-slate-100 text-slate-950 font-medium text-sm px-5 py-2.5 rounded-full backdrop-blur-md shadow-lg transition-all group cursor-pointer">
+                  <span>Mulai Sekarang</span>
+                  <span className="w-6 h-6 rounded-full bg-slate-950 text-white flex items-center justify-center transition-transform group-hover:scale-105">
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </span>
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </header>
