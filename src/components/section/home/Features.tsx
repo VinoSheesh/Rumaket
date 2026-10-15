@@ -1,60 +1,28 @@
 "use client";
+
 import { FEATURES } from "@/data/home";
-import { Calendar, FileText, Users, Bell, ArrowRight } from "lucide-react";
+import { Calendar, FileText, Users, Bell, ArrowUpRight } from "lucide-react";
 
 const FEATURE_ICONS = [Calendar, FileText, Users, Bell];
-
-const ACCENTS = [
-  {
-    bg: "bg-accent-50",
-    border: "border-accent-100",
-    icon: "text-accent-700",
-    dot: "bg-accent-400",
-    hover: "hover:border-accent-300",
-  },
-  {
-    bg: "bg-warmth-50",
-    border: "border-warmth-100",
-    icon: "text-warmth-600",
-    dot: "bg-warmth-500",
-    hover: "hover:border-warmth-300",
-  },
-  {
-    bg: "bg-brand-50",
-    border: "border-brand-100",
-    icon: "text-brand-700",
-    dot: "bg-brand-400",
-    hover: "hover:border-brand-300",
-  },
-  {
-    bg: "bg-slate-50",
-    border: "border-slate-200",
-    icon: "text-slate-700",
-    dot: "bg-slate-400",
-    hover: "hover:border-slate-300",
-  },
-];
 
 export function Features() {
   return (
     <section
       id="fitur"
-      className="relative overflow-hidden border-b border-slate-200 bg-slate-50"
+      className="w-full bg-white text-slate-90"
     >
-      <div className="absolute -top-20 left-1/4 -z-10 h-96 w-96 rounded-full bg-accent-50 blur-3xl opacity-60" />
-      <div className="absolute bottom-0 right-0 -z-10 h-80 w-80 rounded-full bg-warmth-50 blur-3xl opacity-50" />
-
-      <div className="mx-auto max-w-6xl px-6 pt-20 md:pt-28">
-        <div className="mb-12 grid gap-8 md:grid-cols-12 md:items-end">
+      <div className="mx-auto max-w-7xl px-6 pt-20 pb-12 lg:px-8">
+        <div className="grid gap-8 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
-            <h2 className="font-display text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
+            <span className="text-xs font-bold uppercase tracking-widest text-slate-900 mb-3 block">
+              Fitur Utama
+            </span>
+            <h2 className="font-display text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
               Biar nggak ada <br />
-              <span className="bg-gradient-to-r from-brand-700 to-accent-600 bg-clip-text text-transparent">
-                yang kelupaan.
-              </span>
+              <span className="text-slate-800/65">yang kelupaan.</span>
             </h2>
           </div>
-          <div className="md:col-span-5 md:pb-2">
+          <div className="md:col-span-5 md:pb-1">
             <p className="text-base leading-relaxed text-slate-600 md:text-lg">
               Hal-hal kecil yang sering bikin keluarga ribet, sekarang bisa
               beres dalam satu tempat. Tinggal geser, semua kelihatan.
@@ -63,88 +31,55 @@ export function Features() {
         </div>
       </div>
 
-      <div className="relative">
-        <div
-          className="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-8 pl-6 md:pl-[max(1.5rem,calc((100vw-72rem)/2))] pr-6"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        >
-          <style jsx>{`
-            div::-webkit-scrollbar {
-              display: none;
-            }
-          `}</style>
+      <div className="w-full border-t border-slate-200">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-200 border-b border-slate-200">
+            {FEATURES.map((f, index) => {
+              const Icon = FEATURE_ICONS[index] || Calendar;
 
-          {FEATURES.map((f, index) => {
-            const Icon = FEATURE_ICONS[index] || Calendar;
-            const accent = ACCENTS[index % ACCENTS.length];
-            const isHighlight = index === 0;
-
-            return (
-              <div
-                key={f.title}
-                className={`group relative flex flex-shrink-0 snap-start flex-col justify-between overflow-hidden rounded-3xl border bg-gradient-to-br p-7 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 md:p-8 ${
-                  isHighlight
-                    ? "w-[300px] md:w-[420px] from-white to-accent-50/40 border-accent-100"
-                    : `w-[260px] md:w-[320px] from-white to-slate-50 ${accent.border} ${accent.hover}`
-                }`}
-              >
+              return (
                 <div
-                  className={`absolute -top-12 -right-12 h-32 w-32 rounded-full blur-2xl ${accent.dot} opacity-20`}
-                />
+                  key={f.title}
+                  className="group flex flex-col justify-between p-8 md:p-10 transition-colors hover:bg-slate-50/80"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-8">
+                      <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100/80 transition-transform group-hover:scale-105">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <span className="font-mono text-xs font-semibold text-slate-400">
+                        0{index + 1}
+                      </span>
+                    </div>
 
-                <div className="relative">
-                  <div
-                    className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm ${accent.icon}`}
-                  >
-                    <Icon className="h-6 w-6" />
-                  </div>
-
-                  <div className="mt-6">
-                    <h3
-                      className={`font-display font-bold text-slate-900 ${
-                        isHighlight ? "text-xl md:text-2xl" : "text-lg"
-                      }`}
-                    >
+                    <h3 className="font-display text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-900 transition-colors">
                       {f.title}
                     </h3>
-                    <p
-                      className={`mt-3 leading-relaxed text-slate-600 ${
-                        isHighlight ? "text-sm md:text-base" : "text-sm"
-                      }`}
-                    >
+                    <p className="text-sm leading-relaxed text-slate-600">
                       {f.desc}
                     </p>
                   </div>
-                </div>
 
-                <div className="relative mt-8 flex items-center gap-2">
-                  <span className={`h-1.5 w-1.5 rounded-full ${accent.dot}`} />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                    0{index + 1} / 0{FEATURES.length}
-                  </span>
+                  <div className="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between text-xs font-medium text-slate-500">
+                    <span>Terintegrasi</span>
+                    <ArrowUpRight className="w-4 h-4 text-slate-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-
-          <div className="w-2 flex-shrink-0 md:w-8" aria-hidden="true" />
+              );
+            })}
+          </div>
         </div>
-
-        <div className="pointer-events-none absolute right-0 top-0 bottom-8 hidden w-24 bg-gradient-to-l from-slate-50 to-transparent md:block" />
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 pb-20 md:pb-28">
-        <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-slate-500">
-          <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand-400" />
-            Data keluarga dijaga aman
+      <div className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
+        <div className="flex flex-wrap items-center justify-between gap-y-4 text-xs md:text-sm text-slate-500 font-medium">
+          <div className="flex items-center gap-2.5">
+            Data keluarga dijaga aman & privat
           </div>
-          <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent-400" />
-            Bisa dibuka dari HP, tablet, atau laptop
+          <div className="flex items-center gap-2.5">
+            Dapat dibuka dari HP, tablet, atau laptop
           </div>
-          <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-warmth-500" />
+          <div className="flex items-center gap-2.5">
             Sistem stabil, keluarga tenang
           </div>
         </div>
