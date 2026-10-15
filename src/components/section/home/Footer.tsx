@@ -15,7 +15,7 @@ export function Footer() {
 
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-600">
               <span className="font-semibold text-slate-900">
-                Ngrumat lan Raket.
+                Ngrumat lan Kraket.
               </span>{" "}
               Satu ruang sederhana untuk keluarga saling bantu merawat orang
               tercinta — dari mana saja.

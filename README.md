@@ -1,6 +1,6 @@
 # Rumaket - Elderly Care Management System
 
-> **Rumaket** as in **Care Together**, **Raket** as in **Stay Connected.** A simple platform for families to collaborate in caring for their loved ones — from anywhere.
+> **Rumaket** as in **Care Together**, **Kraket** as in **Stay Connected.** A simple platform for families to collaborate in caring for their loved ones — from anywhere.
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.4.0-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.3.0-blue?style=flat-square&logo=react)](https://reactjs.org/)
@@ -50,16 +50,20 @@
 ## ✨ Key Features
 
 ### 1. **Isolated Patient Rooms**
+
 One dedicated dashboard per elderly patient — schedules, and notes are not mixed between different families. Each room has:
+
 - Room name and patient name
 - Unique invitation code (6 characters)
 - List of assigned caretakers
 - Complete activity history
 
 ### 2. **Categorized Schedules**
+
 Medication, nutrition, hygiene, vital signs, and therapy — grouped by time slots, not confusing long lists.
 
 **Schedule Categories:**
+
 - 💊 **Medication** (medication)
 - 🥗 **Nutrition & Meals** (meal)
 - 🧼 **Hygiene & Personal Care** (hygiene)
@@ -67,24 +71,29 @@ Medication, nutrition, hygiene, vital signs, and therapy — grouped by time slo
 - 🏃 **Therapy & Activities** (therapy)
 
 **Time Slots:**
+
 - Morning (06:00 - 11:59)
 - Afternoon (12:00 - 16:59)
 - Evening/Night (17:00 - 21:59)
 - Specific Time (HH:mm)
 
 ### 3. **One-Tap Check-In/Out**
+
 Caretakers can check in/out directly without GPS/photo verification. Real-time status shows who is currently on duty.
 
 ### 4. **Shift Handover Notes**
+
 Health conditions, behavioral changes, and measurement results are neatly recorded between shifts, with supporting photos.
 
 **Note Categories:**
+
 - **Health Condition** (health_condition)
 - **Behavior Change** (behavior_change)
 - **Blood Pressure/Sugar Results** (vitals_result)
 - **Shift Handover Message** (shift_handover)
 
 ### 5. **Caretaker Management**
+
 Owners can invite and manage caretakers with a simple invite code system.
 
 ---
@@ -96,11 +105,13 @@ Owners can invite and manage caretakers with a simple invite code system.
 Rumaket follows **Informative, Clean & Human-Centered Caretaker UI** design principles:
 
 #### 1. Informative
+
 - Display important status clearly without causing cognitive overload
 - Concise information hierarchy that's easy to read quickly
 - High contrast for optimal readability (min 4.5:1)
 
 #### 2. Clean
+
 - Free from excessive decoration (No AI-slop patterns)
 - No heavy neon gradients
 - No excessive rounded corners
@@ -108,6 +119,7 @@ Rumaket follows **Informative, Clean & Human-Centered Caretaker UI** design prin
 - Spacing system based on 8dp rhythm
 
 #### 3. Humanistic (Empathetic & Warm)
+
 - **Deep Navy Trust** (#0C1E5B) for professional and trustworthy impression
 - **Ice Blue Accent** (#38BDF8) for active status and highlights
 - **Sunlight Glow** (#F59E0B) for warm touch on notifications
@@ -151,6 +163,7 @@ Button lg: 48px (primary CTA) ✅
 ## 🛠 Tech Stack
 
 ### Frontend
+
 - **Framework**: [Next.js 16.4.0](https://nextjs.org/) (App Router)
 - **React**: 19.3.0 (React 19 with Server Components)
 - **TypeScript**: 5.x (Type-safe development)
@@ -159,6 +172,7 @@ Button lg: 48px (primary CTA) ✅
 - **Fonts**: Inter (body), Plus Jakarta Sans (display)
 
 ### Backend & Database
+
 - **BaaS**: [Supabase](https://supabase.com/)
   - Authentication (Email/Password)
   - PostgreSQL Database
@@ -167,11 +181,13 @@ Button lg: 48px (primary CTA) ✅
   - Row Level Security (RLS)
 
 ### Development Tools
+
 - **Linter**: ESLint
 - **Type Checking**: TypeScript
 - **Package Manager**: npm/yarn/pnpm
 
 ### Deployment
+
 - **Hosting**: Vercel (recommended)
 - **Database**: Supabase Cloud
 - **CDN**: Vercel Edge Network
@@ -306,6 +322,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 4. **Set up Supabase Database**
 
 Run the SQL migrations in your Supabase dashboard or via CLI. The schema includes:
+
 - `profiles` - User profiles
 - `patient_rooms` - Room/patient data
 - `room_members` - Room membership & roles
@@ -333,6 +350,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ### 1. Room Owner / Family Member
 
 **Responsibilities:**
+
 - ✅ Create and manage patient rooms
 - ✅ Invite one or more caretakers
 - ✅ Set up daily schedules for the elderly
@@ -341,6 +359,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 - ✅ Manage caretaker list (remove members)
 
 **Access:**
+
 - Dashboard: List of all owned rooms
 - Room Detail: Full access (overview, schedule, notes, activity, caretakers)
 - Invite Code: Can view and share invitation code
@@ -348,6 +367,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ### 2. CareTaker / Nurse
 
 **Responsibilities:**
+
 - ✅ Access patient rooms where assigned
 - ✅ One-tap check-in / check-out
 - ✅ Mark tasks as complete or skipped
@@ -355,12 +375,14 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 - ✅ View today's schedule
 
 **Access:**
+
 - Dashboard: List of assigned rooms (not owner)
 - Room Detail: Read-only caretakers tab, full access to others
 - Schedule: Can mark as complete/skip
 - Notes: Can create new notes
 
 **Restrictions:**
+
 - ❌ Cannot delete rooms
 - ❌ Cannot edit schedules (only mark status)
 - ❌ Cannot remove other caretakers
@@ -389,6 +411,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ```
 
 **Related files:**
+
 - `src/app/(auth)/register/page.tsx`
 - `src/app/(auth)/login/page.tsx`
 - `src/app/(auth)/join/page.tsx`
@@ -407,6 +430,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 5. User becomes room owner
 
 **Related files:**
+
 - `src/app/dashboard/rooms/new/page.tsx`
 - `src/app/dashboard/actions.ts` → `createRoom()`
 
@@ -419,6 +443,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 5. After auth, auto-join room as caretaker
 
 **Related files:**
+
 - `src/app/(auth)/join/page.tsx`
 - `src/app/(auth)/actions.ts` → `joinRoomByCode()`
 
@@ -438,6 +463,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 4. Submit → Schedule created with status `pending`
 
 **Related files:**
+
 - `src/app/rooms/[roomId]/schedule/new/page.tsx`
 - `src/app/rooms/[roomId]/schedule/actions.ts` → `createSchedule()`
 
@@ -450,6 +476,7 @@ pending → [Complete] → completed
 ```
 
 **Related files:**
+
 - `src/components/rooms/ScheduleItem.tsx`
 - `src/app/rooms/[roomId]/schedule/actions.ts`
   - `completeSchedule()`
@@ -471,10 +498,12 @@ pending → [Complete] → completed
 3. Badge shows shift duration
 
 **Real-time Updates:**
+
 - Uses Supabase Realtime subscription
 - All users in same room see live status
 
 **Related files:**
+
 - `src/components/rooms/CheckInCard.tsx`
 - `src/app/rooms/[roomId]/actions.ts`
   - `checkIn()`
@@ -498,6 +527,7 @@ pending → [Complete] → completed
 - **shift_handover**: Shift handover notes
 
 **Related files:**
+
 - `src/components/rooms/NoteForm.tsx`
 - `src/components/rooms/NoteCard.tsx`
 - `src/app/rooms/[roomId]/notes/page.tsx`
@@ -509,20 +539,20 @@ pending → [Complete] → completed
 
 ### Color Palette
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `brand-700` | `#1b3ac9` | Primary buttons, active nav |
-| `brand-800` | `#0c1e5b` | Hero sections, header |
-| `brand-900` | `#0a2540` | Deep backgrounds |
-| `accent-400` | `#38bdf8` | Highlights, focus rings |
-| `accent-500` | `#0ea5e9` | Links, hover states |
-| `warmth-100` | `#fef3c7` | Pending badge background |
-| `warmth-500` | `#f59e0b` | Warmth accent (notifications) |
-| `warmth-600` | `#d97706` | Warmth text |
-| `emerald-100` | `#dcfce7` | Success badge background |
-| `rose-100` | `#ffe4e6` | Error/skipped badge background |
-| `slate-50` | `#f8fafc` | Page background (soft slate) |
-| `slate-100` | `#f1f5f9` | Card/surface background |
+| Token         | Value     | Usage                          |
+| ------------- | --------- | ------------------------------ |
+| `brand-700`   | `#1b3ac9` | Primary buttons, active nav    |
+| `brand-800`   | `#0c1e5b` | Hero sections, header          |
+| `brand-900`   | `#0a2540` | Deep backgrounds               |
+| `accent-400`  | `#38bdf8` | Highlights, focus rings        |
+| `accent-500`  | `#0ea5e9` | Links, hover states            |
+| `warmth-100`  | `#fef3c7` | Pending badge background       |
+| `warmth-500`  | `#f59e0b` | Warmth accent (notifications)  |
+| `warmth-600`  | `#d97706` | Warmth text                    |
+| `emerald-100` | `#dcfce7` | Success badge background       |
+| `rose-100`    | `#ffe4e6` | Error/skipped badge background |
+| `slate-50`    | `#f8fafc` | Page background (soft slate)   |
+| `slate-100`   | `#f1f5f9` | Card/surface background        |
 
 ### Typography
 
@@ -542,11 +572,11 @@ pending → [Complete] → completed
 <Button variant="danger" size="md">Delete</Button>
 ```
 
-| Size | Height | Usage |
-|------|--------|-------|
-| `sm` | 40px | Desktop/secondary actions |
-| `md` | 44px | Mobile default (min touch target) |
-| `lg` | 48px | Primary CTA buttons |
+| Size | Height | Usage                             |
+| ---- | ------ | --------------------------------- |
+| `sm` | 40px   | Desktop/secondary actions         |
+| `md` | 44px   | Mobile default (min touch target) |
+| `lg` | 48px   | Primary CTA buttons               |
 
 #### Badge
 
@@ -573,6 +603,7 @@ pending → [Complete] → completed
 ### Tables
 
 #### `profiles`
+
 ```sql
 id: uuid (PK, references auth.users)
 full_name: text
@@ -581,6 +612,7 @@ created_at: timestamp
 ```
 
 #### `patient_rooms`
+
 ```sql
 id: uuid (PK)
 name: text (e.g., "Jasmine Room")
@@ -591,6 +623,7 @@ created_at: timestamp
 ```
 
 #### `room_members`
+
 ```sql
 id: uuid (PK)
 room_id: uuid (FK → patient_rooms.id)
@@ -602,6 +635,7 @@ UNIQUE(room_id, user_id)
 ```
 
 #### `schedules`
+
 ```sql
 id: uuid (PK)
 room_id: uuid (FK → patient_rooms.id)
@@ -618,6 +652,7 @@ created_at: timestamp
 ```
 
 #### `notes`
+
 ```sql
 id: uuid (PK)
 room_id: uuid (FK → patient_rooms.id)
@@ -725,7 +760,6 @@ removeCaretaker(memberId: string, roomId: string) // Remove caretaker from room
 
 1. **Server Components by Default**
    - Use `"use client"` only when needed (hooks, event handlers)
-   
 2. **Server Actions for Mutations**
    - All mutations use Server Actions (no API routes)
    - Automatic revalidation with `router.refresh()`
@@ -889,4 +923,4 @@ For questions or issues:
 
 **Built with ❤️ for families caring for their loved ones.**
 
-**Care Together, Stay Connected.** 
+**Care Together, Stay Connected.**

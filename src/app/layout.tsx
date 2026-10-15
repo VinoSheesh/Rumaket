@@ -2,9 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-import { createClient } from "@/lib/supabase/server";
-import { Header } from "@/components/section/home/Header";
-import { Footer } from "@/components/section/home/Footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -39,9 +36,6 @@ export const viewport: Viewport = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const supabase = await createClient();
-  const { data } = await supabase.auth.getUser();
-  const isLoggedIn = !!data.user;
 
   return (
     <html
@@ -49,9 +43,7 @@ export default async function RootLayout({
       className={`${inter.variable} ${plusJakarta.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-white text-[#0b0b14]">
-        <Header isLoggedIn={isLoggedIn} />
         {children}
-        <Footer />
         <Script id="register-sw" strategy="afterInteractive">
           {`
             if ('serviceWorker' in navigator) {
