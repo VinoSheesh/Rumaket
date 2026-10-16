@@ -17,13 +17,13 @@ export function Features() {
             <span className="text-xs font-bold uppercase tracking-widest text-slate-900 mb-3 block">
               Fitur Utama
             </span>
-            <h2 className="font-display text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
               Biar nggak ada <br />
               <span className="text-slate-800/65">yang kelupaan.</span>
             </h2>
           </div>
           <div className="md:col-span-5 md:pb-1">
-            <p className="text-base leading-relaxed text-slate-600 md:text-lg">
+            <p className="text-sm sm:text-base leading-relaxed text-slate-600 md:text-lg">
               Hal-hal kecil yang sering bikin keluarga ribet, sekarang bisa
               beres dalam satu tempat. Tinggal geser, semua kelihatan.
             </p>
@@ -40,10 +40,10 @@ export function Features() {
               return (
                 <div
                   key={f.title}
-                  className="group flex flex-col justify-between p-8 md:p-10 transition-colors hover:bg-slate-50/80"
+                  className="group flex flex-col justify-between p-6 sm:p-8 md:p-10 transition-colors hover:bg-slate-50/80"
                 >
                   <div>
-                    <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center justify-between mb-6 sm:mb-8">
                       <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100/80 transition-transform group-hover:scale-105">
                         <Icon className="w-6 h-6" />
                       </div>
@@ -52,10 +52,10 @@ export function Features() {
                       </span>
                     </div>
 
-                    <h3 className="font-display text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-900 transition-colors">
+                    <h3 className="font-display text-lg sm:text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-900 transition-colors">
                       {f.title}
                     </h3>
-                    <p className="text-sm leading-relaxed text-slate-600">
+                    <p className="text-xs sm:text-sm leading-relaxed text-slate-600">
                       {f.desc}
                     </p>
                   </div>
