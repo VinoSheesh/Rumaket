@@ -44,14 +44,14 @@ export function Hero() {
               </div>
             </div>
 
-            <h1 className="font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-white md:text-6xl">
+            <h1 className="font-display text-3xl sm:text-4xl font-extrabold leading-[1.08] tracking-tight text-white md:text-6xl">
               Rawat orang tercinta, <br />
               <span className="bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
                 biar hubungan tetap rekat.
               </span>
             </h1>
 
-            <p className="mt-5 max-w-lg text-base md:text-lg leading-relaxed text-slate-300 font-normal">
+            <p className="mt-5 max-w-lg text-sm sm:text-base md:text-lg leading-relaxed text-slate-300 font-normal">
               Satu ruang sederhana untuk keluarga saling bantu, bagi tugas jaga,
               ingat jadwal obat, dan titip pesan buat yang sedang menemani.
             </p>
@@ -59,7 +59,7 @@ export function Hero() {
 
           <div className="flex flex-col lg:col-span-5 justify-start">
             <div className="max-w-sm flex flex-col items-start text-left">
-              <p className="text-sm md:text-base leading-relaxed text-slate-300 mb-6 font-normal">
+              <p className="text-xs sm:text-sm md:text-base leading-relaxed text-slate-300 mb-6 font-normal">
                 Sekarang, semua kabar tentang orang tua bisa dilihat dari satu
                 tempat. Nggak perlu tanya-tanya lagi di grup WA.
               </p>
