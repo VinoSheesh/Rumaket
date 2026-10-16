@@ -3,14 +3,14 @@
 import Image from "next/image";
 import { aboutContent } from "@/app/(main)/about/content";
 import { Users } from "lucide-react";
+import teamImage from "../../../../public/images/our-team.png";
 
 export function AboutTeam() {
   const team = aboutContent?.teamSection || {
     label: "Dibalik Layar",
-    title: "Tim pencipta, desainer, & pemecah masalah",
+    title: "Tim riset, desainer, & pengembang",
     subheading:
       "Kami adalah sekelompok individu yang berdedikasi menciptakan ruang digital yang aman dan hangat bagi seluruh keluarga Indonesia.",
-    imageSrc: "/images/team-full.jpg",
     imageAlt: "Tim Pengembang Rumaket",
     badgeText: "Tim Pengembang & Kreator Rumaket",
   };
@@ -46,7 +46,7 @@ export function AboutTeam() {
           <div className="lg:col-span-7">
             <div className="relative aspect-[16/10] w-full rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-slate-100">
               <Image
-                src={team.imageSrc}
+                src={teamImage}
                 alt={team.imageAlt}
                 fill
                 className="object-cover object-center transition-transform duration-700 hover:scale-105"

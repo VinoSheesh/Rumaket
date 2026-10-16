@@ -1,13 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, Heart, Shield, Users } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 export function AboutHero() {
   return (
     <section className="relative min-h-[90vh] w-full overflow-hidden bg-slate-950 flex flex-col justify-end">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/about-hero.jpg"
+          src="/images/about-hero-section.jpg"
           alt="Tentang Rumaket"
           fill
           className="object-cover object-center"

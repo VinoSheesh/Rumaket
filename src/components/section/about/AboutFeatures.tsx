@@ -2,16 +2,9 @@
 
 import { aboutContent } from "@/app/(main)/about/content";
 import {
-  Calendar,
-  Users,
-  FileText,
-  MessageSquare,
   ArrowUpRight,
   CheckCircle2,
 } from "lucide-react";
-
-// Pemetaan ikon sesuai urutan fitur
-const FEATURE_ICONS = [Calendar, Users, FileText, MessageSquare];
 
 export function AboutFeatures() {
   const { featuresSection, features, featuresGuarantees } = aboutContent;

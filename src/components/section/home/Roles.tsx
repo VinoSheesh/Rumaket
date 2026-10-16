@@ -38,7 +38,7 @@ export function Roles() {
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
             <div className="relative w-full max-w-md h-64 md:h-80 overflow-hidden rounded-2xl shadow-lg border border-slate-200">
               <Image
-                src="/images/hero-section.jpg"
+                src="/images/role-section.jpg"
                 alt="Merawat Lansia Bersama"
                 fill
                 className="object-cover object-center"

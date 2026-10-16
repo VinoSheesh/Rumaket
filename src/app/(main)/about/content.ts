@@ -63,7 +63,7 @@ export const aboutContent = {
 
   teamSection: {
     label: "Dibalik Layar",
-    title: "Tim pencipta, desainer, & pemecah masalah",
+    title: "Tim riset, desainer, & pengembang",
     subheading:
       "Kami adalah sekelompok individu yang berdedikasi menciptakan ruang digital yang aman dan hangat bagi seluruh keluarga Indonesia.",
     imageSrc: "/images/team-full.jpg",

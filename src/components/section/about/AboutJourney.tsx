@@ -9,7 +9,7 @@ export function AboutJourney() {
       <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center">
         <div className="lg:col-span-6 relative aspect-[4/3] w-full rounded-3xl overflow-hidden shadow-2xl border border-slate-100">
           <Image
-            src="/images/about-journey.jpg"
+            src="/images/about-naration-section.jpg"
             alt="Perjalanan Rumaket"
             fill
             className="object-cover object-center"
