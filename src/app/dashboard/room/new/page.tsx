@@ -26,7 +26,7 @@ export default function NewRoomPage() {
         setError(result.error);
         return;
       }
-      router.push(`/rooms/${result.roomId}`);
+      router.push(`/room?id=${result.roomId}`);
     });
   }
 

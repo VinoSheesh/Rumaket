@@ -106,7 +106,7 @@ export function DashboardHeader({ userName, userEmail }: DashboardHeaderProps) {
                 </button>
               </Link>
 
-              <Link href="/dashboard/rooms/new">
+              <Link href="/dashboard/room/new">
                 <button className="flex items-center gap-1.5 rounded-full bg-blue-900 px-4 py-2 text-xs font-semibold text-white shadow-md shadow-blue-900/20 hover:bg-slate-700 transition-all cursor-pointer">
                   <Plus className="w-4 h-4" />
                   <span>Buat Room</span>
@@ -221,7 +221,7 @@ export function DashboardHeader({ userName, userEmail }: DashboardHeaderProps) {
 
               <div className="grid grid-cols-2 gap-2">
                 <Link
-                  href="/dashboard/rooms/new"
+                  href="/dashboard/room/new"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center justify-center gap-2 rounded-2xl bg-blue-900 px-4 py-3 text-xs font-bold text-white shadow-md shadow-blue-900/20"
                 >
