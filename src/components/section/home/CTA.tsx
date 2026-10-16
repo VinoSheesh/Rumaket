@@ -18,14 +18,14 @@ export function CTA() {
 
         <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-2xl">
-            <h2 className="font-display text-4xl font-extrabold tracking-tight text-white md:text-6xl leading-[1.1]">
+            <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-white md:text-6xl leading-[1.1]">
               Mulai langkah kecil <br />
               <span className="bg-gradient-to-r from-blue-300 via-blue-200 to-cyan-400 bg-clip-text text-transparent">
                 untuk orang tersayang.
               </span>
             </h2>
 
-            <p className="mt-6 text-base md:text-lg leading-relaxed text-slate-300 font-normal">
+            <p className="mt-6 text-sm sm:text-base md:text-lg leading-relaxed text-slate-300 font-normal">
               Merawat orang tua bukan beban, tapi bentuk bakti yang bisa dibagi
               bersama saudara. Buat ruang hangat untuk keluargamu sekarang.
             </p>
