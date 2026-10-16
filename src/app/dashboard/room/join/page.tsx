@@ -37,7 +37,7 @@ export default function JoinPage() {
       return;
     }
 
-    router.push(`/rooms/${result.roomId}`);
+    router.push(`/room/${result.roomId}`);
   }
 
   return (

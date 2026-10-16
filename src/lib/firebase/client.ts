@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: "AIzaSyA_ObKQb4SNAj9NG3Skf9tELjrNhjKD5HU",
+  authDomain: "rumaket-id.firebaseapp.com",
+  projectId: "rumaket-id",
+  storageBucket: "rumaket-id.firebasestorage.app",
+  messagingSenderId: "413045896477",
+  appId: "1:413045896477:web:42955173178dc69cf6ddf4"
 };
 
 export const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
