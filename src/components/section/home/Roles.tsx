@@ -3,7 +3,7 @@ import { Users, HeartHandshake, Home, Shield, Activity } from "lucide-react";
 
 export function Roles() {
   return (
-    <section id="peran" className="w-full bg-white text-slate-900 ">
+    <section id="roles" className="w-full bg-white text-slate-900 ">
       <div className="w-full border-t ">
         <div className="mx-auto max-w-7xl grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-slate-200">
           <div className="flex items-center justify-center gap-2 py-6 px-4 text-slate-700 font-semibold text-sm">
@@ -30,7 +30,7 @@ export function Roles() {
           <div className="lg:col-span-7">
             <h2 className="text-lg md:text-xl lg:text-3xl font-bold leading-relaxed text-slate-900 tracking-tight">
               <span className="text-blue-900 font-extrabold">Rumaket</span>{" "}
-              membantu setiap anggota keluarga ikut ngrumat orang tua tercinta.
+              membantu setiap anggota keluarga ikut merawat orang tua tercinta.
               Semua saling melengkapi dengan perannya masing-masing.
             </h2>
           </div>
