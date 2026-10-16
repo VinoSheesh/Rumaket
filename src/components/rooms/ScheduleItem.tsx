@@ -23,6 +23,7 @@ import {
   AlertCircle,
   Loader2,
   HelpCircle,
+  Repeat,
 } from "lucide-react";
 
 export function ScheduleItem({
@@ -98,6 +99,12 @@ export function ScheduleItem({
                 <span className="flex items-center gap-1 bg-slate-100 px-2 py-0.5 rounded-md font-mono text-[11px] font-bold text-slate-700">
                   <Clock className="w-3 h-3 text-slate-400" />
                   {schedule.specific_time}
+                </span>
+              )}
+              {schedule.recurrence_template_id && (
+                <span className="flex items-center gap-1 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-md text-[11px] font-bold text-blue-700">
+                  <Repeat className="w-3 h-3 text-blue-500" />
+                  Rutin
                 </span>
               )}
             </div>

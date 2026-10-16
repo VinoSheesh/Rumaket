@@ -56,6 +56,22 @@ export type Schedule = {
   skip_reason: string | null;
   created_by: string;
   created_at: string;
+  recurrence_template_id?: string | null;
+};
+
+export type ScheduleTemplate = {
+  id: string;
+  room_id: string;
+  category: ScheduleCategory;
+  title: string;
+  description: string | null;
+  interval_hours: number;
+  start_time: string;
+  start_date: string;
+  end_date: string | null;
+  active: boolean;
+  created_by: string;
+  created_at: string;
 };
 
 export type Attendance = {

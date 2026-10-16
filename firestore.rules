@@ -72,6 +72,17 @@ service cloud.firestore {
           (isMember(roomId) && resource.data.created_by == request.auth.uid);
       }
 
+      // Recurring-activity rules (e.g. "medication every 5 hours"). The
+      // cron script materializes concrete `schedules` docs from these via
+      // the Admin SDK, which bypasses these rules entirely.
+      match /schedule_templates/{id} {
+        allow read: if isMember(roomId);
+        allow create: if isMember(roomId) && request.resource.data.created_by == request.auth.uid;
+        allow update: if isMember(roomId);
+        allow delete: if isOwner(roomId) ||
+          (isMember(roomId) && resource.data.created_by == request.auth.uid);
+      }
+
       match /attendances/{id} {
         allow read: if isMember(roomId);
         allow create: if isMember(roomId) && request.resource.data.caretaker_id == request.auth.uid;

@@ -15,6 +15,7 @@ import { useRoomContext } from "@/lib/firebase/room-context";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ScheduleItem } from "@/components/rooms/ScheduleItem";
+import { RecurringTemplateList } from "@/components/rooms/RecurringTemplateList";
 import { SCHEDULE_CATEGORIES, TIME_SLOTS } from "@/lib/constants";
 import type { Schedule, ScheduleCategory, TimeSlot } from "@/lib/types";
 import {
@@ -105,6 +106,8 @@ export default function SchedulePage() {
           </Button>
         </Link>
       </div>
+
+      <RecurringTemplateList roomId={roomId} />
 
       <div className="space-y-3 rounded-3xl bg-white p-4 sm:p-5 border border-slate-200/80 shadow-sm">
         <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider pb-1">

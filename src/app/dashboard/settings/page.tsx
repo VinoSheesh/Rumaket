@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAuth } from "@/lib/firebase/auth-context";
 import { subscribeToPush } from "@/lib/push";
+import { InstallAppCard } from "@/components/dashboard/InstallAppCard";
 import {
   Bell,
   Lock,
@@ -58,6 +59,8 @@ export default function SettingsPage() {
       </div>
 
       <div className="space-y-5">
+        <InstallAppCard />
+
         {/* Section 1: Push Notification */}
         <div className="rounded-3xl border border-slate-200/80 bg-white p-6 sm:p-7 shadow-sm space-y-4">
           <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3">

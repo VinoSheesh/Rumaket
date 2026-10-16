@@ -4,7 +4,10 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRoomContext } from "@/lib/firebase/room-context";
-import { createSchedule } from "@/app/room/schedule/actions";
+import {
+  createSchedule,
+  createScheduleTemplate,
+} from "@/app/room/schedule/actions";
 import { Button } from "@/components/ui/Button";
 import { Input, Label, Select, Textarea } from "@/components/ui/Field";
 import { SCHEDULE_CATEGORIES, TIME_SLOTS } from "@/lib/constants";
@@ -14,6 +17,7 @@ import {
   CalendarPlus,
   ClipboardList,
   Clock,
+  Repeat,
 } from "lucide-react";
 
 export default function NewSchedulePage() {
@@ -21,6 +25,7 @@ export default function NewSchedulePage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [isRecurring, setIsRecurring] = useState(false);
   const today = new Date().toISOString().slice(0, 10);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -28,7 +33,9 @@ export default function NewSchedulePage() {
     const formData = new FormData(e.currentTarget);
     setError(null);
     startTransition(async () => {
-      const result = await createSchedule(room.id, userId, formData);
+      const result = isRecurring
+        ? await createScheduleTemplate(room.id, userId, formData)
+        : await createSchedule(room.id, userId, formData);
       if (!result.ok) {
         setError(result.error);
         return;
@@ -91,6 +98,31 @@ export default function NewSchedulePage() {
             />
           </div>
 
+          <label
+            htmlFor="is_recurring"
+            className="flex items-center justify-between gap-3 rounded-2xl border border-blue-100 bg-blue-50/60 px-4 py-3 cursor-pointer"
+          >
+            <span className="flex items-center gap-2.5">
+              <Repeat className="h-4 w-4 text-blue-600 shrink-0" />
+              <span className="space-y-0.5">
+                <span className="block text-xs font-semibold text-slate-800">
+                  Jadikan Aktivitas Rutin (berulang)
+                </span>
+                <span className="block text-[11px] text-slate-500">
+                  Contoh: minum obat tiap 5 jam sekali — dibuat otomatis
+                  setiap hari.
+                </span>
+              </span>
+            </span>
+            <input
+              id="is_recurring"
+              type="checkbox"
+              checked={isRecurring}
+              onChange={(e) => setIsRecurring(e.target.checked)}
+              className="h-5 w-5 shrink-0 rounded-md border-slate-300 text-blue-600 focus:ring-blue-600 cursor-pointer"
+            />
+          </label>
+
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label
@@ -114,63 +146,139 @@ export default function NewSchedulePage() {
               </Select>
             </div>
 
-            <div className="space-y-1.5">
-              <Label
-                htmlFor="time_slot"
-                className="text-xs font-semibold text-slate-700"
-              >
-                Slot Waktu Shift
-              </Label>
-              <Select
-                id="time_slot"
-                name="time_slot"
-                required
-                defaultValue="morning"
-                className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 focus:bg-white focus:border-blue-600 focus:outline-none transition-all cursor-pointer"
-              >
-                {Object.entries(TIME_SLOTS).map(([key, v]) => (
-                  <option key={key} value={key}>
-                    {v.label} ({v.range})
-                  </option>
-                ))}
-              </Select>
-            </div>
+            {!isRecurring && (
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="time_slot"
+                  className="text-xs font-semibold text-slate-700"
+                >
+                  Slot Waktu Shift
+                </Label>
+                <Select
+                  id="time_slot"
+                  name="time_slot"
+                  required
+                  defaultValue="morning"
+                  className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 focus:bg-white focus:border-blue-600 focus:outline-none transition-all cursor-pointer"
+                >
+                  {Object.entries(TIME_SLOTS).map(([key, v]) => (
+                    <option key={key} value={key}>
+                      {v.label} ({v.range})
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            )}
           </div>
 
-          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <Label
-                htmlFor="specific_time"
-                className="text-xs font-semibold text-slate-700"
-              >
-                Jam Spesifik{" "}
-                <span className="text-slate-400 font-normal">(Opsional)</span>
-              </Label>
-              <Input
-                id="specific_time"
-                name="specific_time"
-                type="time"
-                className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/50 px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:border-blue-600 focus:outline-none transition-all"
-              />
-            </div>
+          {isRecurring ? (
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="start_time"
+                  className="text-xs font-semibold text-slate-700"
+                >
+                  Jam Mulai
+                </Label>
+                <Input
+                  id="start_time"
+                  name="start_time"
+                  type="time"
+                  required
+                  className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/50 px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:border-blue-600 focus:outline-none transition-all"
+                />
+              </div>
 
-            <div className="space-y-1.5">
-              <Label
-                htmlFor="scheduled_date"
-                className="text-xs font-semibold text-slate-700"
-              >
-                Tanggal Pelaksanaan
-              </Label>
-              <Input
-                id="scheduled_date"
-                name="scheduled_date"
-                type="date"
-                defaultValue={today}
-                required
-                className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/50 px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:border-blue-600 focus:outline-none transition-all"
-              />
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="interval_hours"
+                  className="text-xs font-semibold text-slate-700"
+                >
+                  Ulangi Setiap (jam)
+                </Label>
+                <Input
+                  id="interval_hours"
+                  name="interval_hours"
+                  type="number"
+                  min={1}
+                  max={24}
+                  defaultValue={5}
+                  required
+                  className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/50 px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:border-blue-600 focus:outline-none transition-all"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="start_date"
+                  className="text-xs font-semibold text-slate-700"
+                >
+                  Tanggal Mulai
+                </Label>
+                <Input
+                  id="start_date"
+                  name="start_date"
+                  type="date"
+                  defaultValue={today}
+                  required
+                  className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/50 px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:border-blue-600 focus:outline-none transition-all"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="end_date"
+                  className="text-xs font-semibold text-slate-700"
+                >
+                  Tanggal Berakhir{" "}
+                  <span className="text-slate-400 font-normal">
+                    (Opsional, kosongkan jika tanpa batas)
+                  </span>
+                </Label>
+                <Input
+                  id="end_date"
+                  name="end_date"
+                  type="date"
+                  className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/50 px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:border-blue-600 focus:outline-none transition-all"
+                />
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="specific_time"
+                  className="text-xs font-semibold text-slate-700"
+                >
+                  Jam Spesifik{" "}
+                  <span className="text-slate-400 font-normal">(Opsional)</span>
+                </Label>
+                <Input
+                  id="specific_time"
+                  name="specific_time"
+                  type="time"
+                  className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/50 px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:border-blue-600 focus:outline-none transition-all"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="scheduled_date"
+                  className="text-xs font-semibold text-slate-700"
+                >
+                  Tanggal Pelaksanaan
+                </Label>
+                <Input
+                  id="scheduled_date"
+                  name="scheduled_date"
+                  type="date"
+                  defaultValue={today}
+                  required
+                  className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/50 px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:border-blue-600 focus:outline-none transition-all"
+                />
+              </div>
+            </div>
+          )}
 
           <div className="space-y-1.5">
             <Label

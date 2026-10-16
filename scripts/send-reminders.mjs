@@ -37,8 +37,76 @@ function jakartaParts(date) {
   };
 }
 
+// Stepping rule for recurring activities: start_time, +interval, +interval,
+// … while still before midnight. Mirrors occurrenceTimesForToday() in
+// src/app/room/schedule/actions.ts — duplicated here since this is a plain
+// .mjs script with no build step to share a TS module with the Next.js app.
+// Unlike the client-side version, this always returns the full day's times
+// (no "already past" filter): the cron runs every ~15 min, so a run that
+// lands a few minutes after an occurrence's time should still create it —
+// the reminder pass below is what decides whether it's still due.
+function occurrenceTimesForToday(startTime, intervalHours) {
+  const [startH, startM] = startTime.split(":").map(Number);
+  const times = [];
+  for (let minutes = startH * 60 + startM; minutes < 24 * 60; minutes += intervalHours * 60) {
+    const hh = String(Math.floor(minutes / 60)).padStart(2, "0");
+    const mm = String(minutes % 60).padStart(2, "0");
+    times.push(`${hh}:${mm}`);
+  }
+  return times;
+}
+
+async function generateRecurringInstances(today) {
+  const templatesSnap = await db
+    .collectionGroup("schedule_templates")
+    .where("active", "==", true)
+    .get();
+
+  let generated = 0;
+
+  for (const templateDoc of templatesSnap.docs) {
+    const template = templateDoc.data();
+    if (template.start_date > today) continue;
+    if (template.end_date && template.end_date < today) continue;
+
+    const roomRef = templateDoc.ref.parent.parent;
+    const times = occurrenceTimesForToday(
+      template.start_time,
+      template.interval_hours
+    );
+
+    for (const time of times) {
+      const instanceId = `${templateDoc.id}_${today}_${time.replace(":", "")}`;
+      const instanceRef = roomRef.collection("schedules").doc(instanceId);
+      const existing = await instanceRef.get();
+      if (existing.exists) continue;
+
+      await instanceRef.set({
+        room_id: roomRef.id,
+        category: template.category,
+        time_slot: "custom",
+        specific_time: time,
+        title: template.title,
+        description: template.description ?? null,
+        scheduled_date: today,
+        status: "pending",
+        skip_reason: null,
+        notified: false,
+        created_by: template.created_by,
+        created_at: new Date().toISOString(),
+        recurrence_template_id: templateDoc.id,
+      });
+      generated++;
+    }
+  }
+
+  console.log(`Generated ${generated} recurring schedule instance(s).`);
+}
+
 async function main() {
   const { today, nowTime } = jakartaParts(new Date());
+
+  await generateRecurringInstances(today);
 
   const dueSnap = await db
     .collectionGroup("schedules")
