@@ -27,14 +27,14 @@ export function AboutHero() {
               </span>
             </div>
 
-            <h1 className="font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-white md:text-6xl">
+            <h1 className="font-display text-3xl sm:text-4xl font-extrabold leading-[1.08] tracking-tight text-white md:text-6xl">
               Lahir dari kasih, <br />
               <span className="bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
                 tumbuh untuk merawat bersama.
               </span>
             </h1>
 
-            <p className="mt-5 max-w-lg text-base md:text-lg leading-relaxed text-slate-300 font-normal">
+            <p className="mt-5 max-w-lg text-sm sm:text-base md:text-lg leading-relaxed text-slate-300 font-normal">
               Rumaket hadir dari kerinduan akan ruang aman bagi setiap keluarga
               dalam mendampingi anggota keluarga tercinta dengan lebih ringan,
               teratur, dan penuh kehangatan.
@@ -43,7 +43,7 @@ export function AboutHero() {
 
           <div className="flex flex-col lg:col-span-5 justify-start">
             <div className="max-w-sm flex flex-col items-start text-left">
-              <p className="text-sm md:text-base leading-relaxed text-slate-300 mb-6 font-normal">
+              <p className="text-xs sm:text-sm md:text-base leading-relaxed text-slate-300 mb-6 font-normal">
                 Kami percaya bahwa tugas merawat tak seharusnya dipikul
                 sendirian. Satu ikatan erat dimulai dari kemudahan saling
                 koordinasi.
