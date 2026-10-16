@@ -93,7 +93,7 @@ export function CTA() {
               </li>
               <li>
                 <Link
-                  href="/join"
+                  href="/dashboard/rooms/join"
                   className="hover:text-blue-600 transition-colors"
                 >
                   Gabung Room

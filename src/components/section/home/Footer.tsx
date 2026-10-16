@@ -68,7 +68,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/join"
+                  href="/dashboard/rooms/join"
                   className="text-slate-600 transition-colors hover:text-brand-700"
                 >
                   Masuk dengan Kode Undangan
