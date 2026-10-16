@@ -88,7 +88,7 @@ function RegisterContent() {
               </span>{" "}
               di halaman{" "}
               <Link
-                href="/join"
+                href="/dashboard/room/join"
                 className="font-semibold text-blue-600 hover:text-blue-700"
               >
                 Join Room

@@ -6,6 +6,7 @@ import { db } from "@/lib/firebase/client";
 import { useAuth } from "@/lib/firebase/auth-context";
 import { RequireAuth } from "@/lib/firebase/guard";
 import { DashboardHeader } from "@/components/dashboard/Header";
+import { DashboardFooter } from "@/components/dashboard/Footer";
 
 function DashboardChrome({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
@@ -22,11 +23,12 @@ function DashboardChrome({ children }: { children: React.ReactNode }) {
   const userEmail = user?.email ?? "";
 
   return (
-    <div className="min-h-screen bg-slate-50/50">
+    <div className="min-h-screen bg-slate-50/60">
       <DashboardHeader userName={userName} userEmail={userEmail} />
-      <main className="mx-auto w-full max-w-6xl px-6 pt-28 pb-12">
+      <main className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-10 xl:px-12 pt-28 pb-16">
         {children}
       </main>
+      <DashboardFooter />
     </div>
   );
 }

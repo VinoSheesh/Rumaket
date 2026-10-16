@@ -1,49 +1,32 @@
 "use client";
 
 import { Suspense, type ReactNode } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { RequireAuth } from "@/lib/firebase/guard";
 import { RoomProvider, useRoomContext } from "@/lib/firebase/room-context";
-import { Badge } from "@/components/ui/Badge";
-import { RoomTabs } from "@/components/rooms/RoomTabs";
+import { RoomHeader } from "@/components/room/Header";
+import { DashboardFooter } from "@/components/dashboard/Footer";
+import { Loader2 } from "lucide-react";
 
 function RoomShell({ children }: { children: ReactNode }) {
   const { room, membership } = useRoomContext();
   const isOwner = membership.role === "owner";
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50">
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-5xl px-6 pt-4">
-          <Link href="/dashboard" className="text-sm text-slate-500">
-            ← Semua Room
-          </Link>
-          <div className="mt-2 flex items-start justify-between gap-3">
-            <div>
-              <h1 className="font-display text-xl font-bold text-slate-900">
-                {room.name}
-              </h1>
-              <p className="text-sm text-slate-500">
-                Lansia: {room.patient_name}
-              </p>
-            </div>
-            <Badge
-              className={
-                isOwner
-                  ? "border-brand-200 bg-brand-50 text-brand-700"
-                  : "border-slate-200 bg-slate-50 text-slate-600"
-              }
-            >
-              {isOwner ? "Owner" : "CareTaker"}
-            </Badge>
-          </div>
-          <RoomTabs roomId={room.id} isOwner={isOwner} />
-        </div>
-      </header>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-8">
+    <div className="flex min-h-screen flex-col bg-slate-50/60">
+      <RoomHeader
+        roomId={room.id}
+        roomName={room.name}
+        patientName={room.patient_name}
+        inviteCode={room.invite_code}
+        isOwner={isOwner}
+      />
+
+      <main className="flex-1 mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-10 xl:px-12 py-6 sm:py-8">
         {children}
       </main>
+
+      <DashboardFooter />
     </div>
   );
 }
@@ -60,8 +43,9 @@ function RoomLayoutInner({ children }: { children: ReactNode }) {
 
 function LoadingFallback() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50">
-      <p className="text-sm text-slate-500">Memuat…</p>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50/60 space-y-3">
+      <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      <p className="text-xs font-medium text-slate-500">Memuat ruangan perawatan…</p>
     </div>
   );
 }

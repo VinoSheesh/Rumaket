@@ -1,24 +1,30 @@
+import type { ReactNode } from "react";
+
 export function EmptyState({
   icon,
   title,
   description,
   action,
 }: {
-  icon?: string;
+  icon?: ReactNode;
   title: string;
   description?: string;
-  action?: React.ReactNode;
+  action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-2 rounded-md border border-dashed border-slate-300 px-6 py-12 text-center">
-      {icon && <span className="text-2xl">{icon}</span>}
-      <p className="font-display text-sm font-semibold text-slate-900">
-        {title}
-      </p>
-      {description && (
-        <p className="max-w-sm text-sm text-slate-600">{description}</p>
+    <div className="flex flex-col items-center justify-center gap-2 rounded-3xl border border-dashed border-slate-200 bg-slate-50/50 px-6 py-10 text-center">
+      {icon && (
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-slate-500 shadow-xs border border-slate-100 mb-1">
+          {icon}
+        </div>
       )}
-      {action && <div className="mt-2">{action}</div>}
+      <p className="font-display text-sm font-bold text-slate-900">{title}</p>
+      {description && (
+        <p className="max-w-sm text-xs text-slate-500 leading-relaxed">
+          {description}
+        </p>
+      )}
+      {action && <div className="mt-3">{action}</div>}
     </div>
   );
 }
