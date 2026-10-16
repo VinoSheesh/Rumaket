@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Heart } from "lucide-react";
 
 export function Footer() {
   return (
@@ -28,28 +27,28 @@ export function Footer() {
             </p>
             <ul className="space-y-3 text-sm">
               <li>
-                <a
-                  href="#peran"
+                <Link
+                  href="/#roles"
                   className="text-slate-600 transition-colors hover:text-brand-700"
                 >
                   Siapa yang Bisa Ikut
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#feature"
+                <Link
+                  href="/#feature"
                   className="text-slate-600 transition-colors hover:text-brand-700"
                 >
                   Apa Saja Fiturnya
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#how-it-works"
+                <Link
+                  href="/#how-it-works"
                   className="text-slate-600 transition-colors hover:text-brand-700"
                 >
                   Cara Mulai
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

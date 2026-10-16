@@ -22,7 +22,7 @@ export const STEPS = [
   {
     n: "02",
     title: "Undang CareTaker",
-    desc: "Bagikan kode undangan — caretaker tinggal masukkan kode untuk bergabung.",
+    desc: "Gunakan kode unik untuk bergabung ke room.",
   },
   {
     n: "03",

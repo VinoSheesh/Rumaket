@@ -8,7 +8,7 @@ const FEATURE_ICONS = [Calendar, FileText, Users, Bell];
 export function Features() {
   return (
     <section
-      id="fitur"
+      id="feature"
       className="w-full bg-white text-slate-90"
     >
       <div className="mx-auto max-w-7xl px-6 pt-20 pb-12 lg:px-8">
