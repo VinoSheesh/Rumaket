@@ -13,10 +13,10 @@ export function HowItWorks() {
       <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
         {/* Header */}
         <div className="mb-16 max-w-2xl">
-          <h2 className="font-display text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+          <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
             Cara kerja Rumaket
           </h2>
-          <p className="mt-4 text-lg text-slate-600">
+          <p className="mt-4 text-sm sm:text-base text-slate-600">
             Empat langkah sederhana untuk memulai kolaborasi keluarga. Tidak
             perlu pelatihan teknis yang rumit.
           </p>
@@ -53,10 +53,10 @@ export function HowItWorks() {
                 <span className="text-[10px] font-bold text-brand-600 uppercase tracking-widest mb-1">
                   Langkah {s.n}
                 </span>
-                <h3 className="font-display text-base font-bold text-slate-900 md:text-lg">
+                <h3 className="font-display text-sm sm:text-base font-bold text-slate-900 md:text-lg">
                   {s.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600 max-w-[240px]">
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 max-w-[240px]">
                   {s.desc}
                 </p>
               </div>

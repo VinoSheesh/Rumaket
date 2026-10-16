@@ -28,7 +28,7 @@ export function Roles() {
       <div className="mx-auto max-w-7xl px-6 py-16 md:py-24 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16 items-center">
           <div className="lg:col-span-7">
-            <h2 className="text-lg md:text-xl lg:text-3xl font-bold leading-relaxed text-slate-900 tracking-tight">
+            <h2 className="text-sm sm:text-base md:text-xl lg:text-3xl font-bold leading-relaxed text-slate-900 tracking-tight">
               <span className="text-blue-900 font-extrabold">Rumaket</span>{" "}
               membantu setiap anggota keluarga ikut merawat orang tua tercinta.
               Semua saling melengkapi dengan perannya masing-masing.
@@ -52,26 +52,26 @@ export function Roles() {
         <div className="grid gap-8 md:grid-cols-12 items-center">
           <div className="md:col-span-5 flex items-center gap-3">
             <span className="w-3 h-3 bg-blue-950 inline-block" />
-            <span className="text-base font-bold text-slate-900 tracking-tight">
+            <span className="text-sm sm:text-base font-bold text-slate-900 tracking-tight">
               Dampak Layanan Kami
             </span>
           </div>
 
           <div className="md:col-span-7 grid grid-cols-2 gap-8">
             <div className="border-t-2 border-slate-200 pt-4">
-              <span className="text-4xl md:text-5xl font-extrabold text-blue-950 tracking-tight">
+              <span className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-blue-950 tracking-tight">
                 10,000+
               </span>
-              <p className="mt-2 text-sm md:text-base font-medium text-slate-600">
+              <p className="mt-2 text-xs sm:text-sm md:text-base font-medium text-slate-600">
                 Keluarga Terhubung di Seluruh Indonesia
               </p>
             </div>
 
             <div className="border-t-2 border-slate-200 pt-4">
-              <span className="text-4xl md:text-5xl font-extrabold text-blue-950 tracking-tight">
+              <span className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-blue-950 tracking-tight">
                 98%
               </span>
-              <p className="mt-2 text-sm md:text-base font-medium text-slate-600">
+              <p className="mt-2 text-xs sm:text-sm md:text-base font-medium text-slate-600">
                 Keluarga Merasa Lebih Tenang & Terkoordinasi
               </p>
             </div>
