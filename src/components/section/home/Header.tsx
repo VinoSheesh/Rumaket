@@ -47,18 +47,18 @@ export function Header({ isLoggedIn = false }: HeaderProps) {
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex">
-            <a
-              href="#feature"
+            <Link
+              href="/#feature"
               className="rounded-lg px-4 py-2 text-sm font-medium text-slate-200/80 transition-all hover:underline hover:decoration-2 underline-offset-2 hover:font-semibold hover:text-white cursor-pointer"
             >
               Fitur
-            </a>
-            <a
-              href="#how-it-works"
+            </Link>
+            <Link
+              href="/#how-it-works"
               className="rounded-lg px-4 py-2 text-sm font-medium text-slate-200/80 transition-all hover:underline hover:decoration-2 underline-offset-2 hover:font-semibold hover:text-white cursor-pointer"
             >
               Cara Kerja
-            </a>
+            </Link>
             <a
               href="/about"
               className="rounded-lg px-4 py-2 text-sm font-medium text-slate-200/80 transition-all hover:underline hover:decoration-2 underline-offset-2 hover:font-semibold hover:text-white cursor-pointer"
